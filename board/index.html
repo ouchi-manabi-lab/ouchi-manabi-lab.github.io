@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ja">
+<meta charset="utf-8">
+<title>おうちのやることボード</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+  :root {
+    --bg: #EAF3FC;
+    --bg-deco: #DDEBF9;
+    --card: #FFFFFF;
+    --ink: #4E5B6E;
+    --muted: #8CA0B3;
+    --line: #D5E4F2;
+    --accent: #6FAEE8;
+    --accent-ink: #FFFFFF;
+    --star: #FFCF5C;
+    --danger: #F27D93;
+    --chip-bg: #E3EEFA;
+    --bubble: #FFF6FA;
+    --c-shukudai: #EC93B4;
+    --c-otetsudai: #F5A25D;
+    --c-naraigoto: #5BC8AF;
+    --c-gakkou: #6FAEE8;
+    --c-yarukoto: #A995E8;
+    --shadow: 0 2px 4px rgba(111,174,232,.12), 0 6px 18px rgba(111,174,232,.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #222B39;
+      --bg-deco: #283344;
+      --card: #2E3948;
+      --ink: #E4EBF4;
+      --muted: #93A5B8;
+      --line: #405062;
+      --accent: #82B8EC;
+      --accent-ink: #17222F;
+      --star: #FFD97A;
+      --danger: #F393A5;
+      --chip-bg: #38455736;
+      --bubble: #3A4556;
+      --c-shukudai: #F0A3C0;
+      --c-otetsudai: #F5B173;
+      --c-naraigoto: #6FD3BB;
+      --c-gakkou: #82B8EC;
+      --c-yarukoto: #B7A5EE;
+      --shadow: 0 2px 6px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #EAF3FC; --bg-deco: #DDEBF9; --card: #FFFFFF; --ink: #4E5B6E;
+    --muted: #8CA0B3; --line: #D5E4F2; --accent: #6FAEE8; --accent-ink: #FFFFFF;
+    --star: #FFCF5C; --danger: #F27D93; --chip-bg: #E3EEFA; --bubble: #FFF6FA;
+    --c-shukudai: #EC93B4; --c-otetsudai: #F5A25D; --c-naraigoto: #5BC8AF;
+    --c-gakkou: #6FAEE8; --c-yarukoto: #A995E8;
+    --shadow: 0 2px 4px rgba(111,174,232,.12), 0 6px 18px rgba(111,174,232,.10);
+  }
+  :root[data-theme="dark"] {
+    --bg: #222B39; --bg-deco: #283344; --card: #2E3948; --ink: #E4EBF4;
+    --muted: #93A5B8; --line: #405062; --accent: #82B8EC; --accent-ink: #17222F;
+    --star: #FFD97A; --danger: #F393A5; --chip-bg: #38455736; --bubble: #3A4556;
+    --c-shukudai: #F0A3C0; --c-otetsudai: #F5B173; --c-naraigoto: #6FD3BB;
+    --c-gakkou: #82B8EC; --c-yarukoto: #B7A5EE;
+    --shadow: 0 2px 6px rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--ink);
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse 90px 46px at 12% 60px, var(--bg-deco) 98%, transparent),
+      radial-gradient(ellipse 120px 56px at 88% 130px, var(--bg-deco) 98%, transparent),
+      radial-gradient(ellipse 80px 40px at 30% 240px, var(--bg-deco) 98%, transparent);
+    background-repeat: no-repeat;
+    font-family: "UD デジタル 教科書体 N-R", "UD Digi Kyokasho N-R",
+      "Hiragino Maru Gothic ProN", "BIZ UDGothic", "Noto Sans JP",
+      "Yu Gothic", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .app { max-width: 560px; margin: 0 auto; padding: 16px 14px 150px; }
+
+  /* ---- ヘッダー ---- */
+  header { margin-bottom: 12px; }
+  .titlerow { display: flex; align-items: baseline; justify-content: space-between; gap: 4px 8px; flex-wrap: wrap; }
+  h1 { font-size: 20px; margin: 0; letter-spacing: .04em; white-space: nowrap; }
+  .today { font-size: 14px; color: var(--muted); white-space: nowrap; }
+
+  .herocard {
+    margin-top: 10px; background: var(--card); border-radius: 24px;
+    padding: 14px 16px; box-shadow: var(--shadow);
+    display: flex; align-items: center; gap: 14px;
+    border: 2.5px solid var(--line);
+  }
+  .cat { flex: 0 0 auto; width: 84px; height: 84px; }
+  @keyframes catbob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  .cat svg { animation: catbob 3.2s ease-in-out infinite; }
+  .herocard .right { flex: 1 1 auto; min-width: 0; }
+  .bubble {
+    position: relative; background: var(--bubble); border: 2px solid var(--line);
+    border-radius: 16px; padding: 8px 12px; font-size: 15px; line-height: 1.5;
+  }
+  .bubble::before {
+    content: ""; position: absolute; left: -9px; top: 50%; margin-top: -6px;
+    border: 6px solid transparent; border-right-color: var(--line);
+  }
+  .score { margin-top: 8px; font-size: 14.5px; padding-left: 4px; }
+  .score b { font-size: 20px; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .stars { font-size: 16px; letter-spacing: 2px; white-space: nowrap; overflow: hidden; display: block; }
+  @media (prefers-reduced-motion: reduce) { .cat svg { animation: none; } }
+
+  /* ---- フィルタ ---- */
+  .filters { display: flex; gap: 8px; overflow-x: auto; padding: 12px 2px 4px; scrollbar-width: none; }
+  .filters::-webkit-scrollbar { display: none; }
+  .fchip {
+    border: 2px solid var(--line); background: var(--card); color: var(--ink);
+    border-radius: 999px; padding: 7px 15px; font-size: 15px; font-family: inherit;
+    white-space: nowrap; cursor: pointer; flex: 0 0 auto;
+  }
+  .fchip .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; }
+  .fchip.on { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+  .fchip.on .dot { background: var(--accent-ink) !important; }
+
+  /* ---- セクション・タスク ---- */
+  .section { margin-top: 16px; }
+  .sechead { display: flex; align-items: center; gap: 8px; padding: 0 6px 7px; }
+  .sechead .dot { width: 13px; height: 13px; border-radius: 50%; }
+  .sechead .name { font-size: 16px; font-weight: bold; }
+  .sechead .rest {
+    font-size: 12.5px; color: var(--muted); background: var(--card);
+    border: 1.5px solid var(--line); border-radius: 999px; padding: 1px 10px;
+  }
+  .tasklist { display: flex; flex-direction: column; gap: 9px; }
+  .task {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--card); border-radius: 18px; padding: 11px 12px;
+    box-shadow: var(--shadow); border: 2px solid var(--line);
+    border-left: 7px solid var(--catcolor, var(--line));
+    position: relative;
+  }
+  .check {
+    flex: 0 0 auto; width: 40px; height: 40px; border-radius: 50%;
+    border: 3px solid var(--catcolor, var(--muted)); background: transparent;
+    font-size: 20px; line-height: 1; color: transparent; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; padding: 0;
+  }
+  .task.done .check { background: var(--catcolor); border-color: var(--catcolor); color: #fff; }
+  .task .body { flex: 1 1 auto; min-width: 0; }
+  .task .text { font-size: 17px; line-height: 1.45; word-break: break-word; }
+  .task.done .text { text-decoration: line-through; color: var(--muted); }
+  .due {
+    display: inline-block; margin-top: 3px; font-size: 12.5px;
+    background: var(--chip-bg); color: var(--muted);
+    border-radius: 999px; padding: 2px 10px; font-variant-numeric: tabular-nums;
+  }
+  .due.today { background: var(--star); color: #5C4400; font-weight: bold; }
+  .due.over { background: var(--danger); color: #fff; font-weight: bold; }
+  .del {
+    flex: 0 0 auto; border: none; background: none; color: var(--muted);
+    font-size: 16px; cursor: pointer; padding: 8px 6px; font-family: inherit;
+  }
+  .del:hover { color: var(--danger); }
+  @keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.25); } 100% { transform: scale(1); } }
+  .task.justdone .check { animation: pop .35s ease; }
+  .flystar { position: absolute; left: 18px; top: 4px; font-size: 22px; pointer-events: none; animation: fly .8s ease forwards; }
+  @keyframes fly {
+    0% { opacity: 1; transform: translateY(0) scale(.8); }
+    100% { opacity: 0; transform: translateY(-42px) scale(1.5); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .task.justdone .check { animation: none; }
+    .flystar { animation: none; opacity: 0; }
+  }
+
+  .empty { text-align: center; color: var(--muted); font-size: 15px; padding: 36px 0; line-height: 2; }
+  .clearline { text-align: center; margin-top: 18px; }
+  .clearbtn {
+    border: 2px solid var(--line); background: var(--card); color: var(--muted);
+    border-radius: 999px; padding: 8px 18px; font-size: 14px; font-family: inherit; cursor: pointer;
+  }
+
+  /* ---- 追加フォーム ---- */
+  .addbar {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    background: var(--card); border-top: 2.5px solid var(--line);
+    padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 16px rgba(111,174,232,.14);
+  }
+  .addbar .inner { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
+  .row1 { display: flex; gap: 8px; }
+  #newText {
+    flex: 1 1 auto; min-width: 0; font-size: 16px; font-family: inherit;
+    border: 2px solid var(--line); border-radius: 999px; padding: 10px 16px;
+    background: var(--bg); color: var(--ink);
+  }
+  #newText:focus { outline: none; border-color: var(--accent); }
+  .addbtn {
+    flex: 0 0 auto; border: none; background: var(--accent); color: var(--accent-ink);
+    font-size: 16px; font-weight: bold; font-family: inherit;
+    border-radius: 999px; padding: 10px 20px; cursor: pointer;
+  }
+  .row2 { display: flex; gap: 8px; align-items: center; }
+  #newCat, #newDue {
+    font-size: 14px; font-family: inherit; border: 2px solid var(--line);
+    border-radius: 12px; padding: 7px 10px; background: var(--bg); color: var(--ink);
+  }
+  #newCat { flex: 1 1 50%; min-width: 0; }
+  #newDue { flex: 1 1 50%; min-width: 0; }
+  .row2 .duelabel { font-size: 13px; color: var(--muted); white-space: nowrap; }
+
+  /* ---- 設定・ひっこし ---- */
+  .settings { margin-top: 26px; font-size: 14px; color: var(--muted); }
+  .settings summary { cursor: pointer; padding: 6px 4px; }
+  .settings .box { display: flex; flex-wrap: wrap; gap: 10px; padding: 10px 4px; }
+  .sbtn {
+    border: 2px solid var(--line); background: var(--card); color: var(--ink);
+    border-radius: 12px; padding: 8px 14px; font-size: 14px; font-family: inherit; cursor: pointer;
+  }
+  .settings input[type="file"] { display: none; }
+  .note { font-size: 12.5px; line-height: 1.7; margin-top: 6px; }
+
+  button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible {
+    outline: 3px solid var(--accent); outline-offset: 2px;
+  }
+</style>
+
+<div class="app">
+  <header>
+    <div class="titlerow">
+      <h1>おうちの やることボード</h1>
+      <div class="today" id="todayLabel"></div>
+    </div>
+    <div class="herocard">
+      <div class="cat" aria-hidden="true">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <!-- しっぽ -->
+          <path d="M97 88 Q114 84 110 68 Q108 60 100 62" fill="none" stroke="#B9D9F5" stroke-width="9" stroke-linecap="round"/>
+          <!-- からだ -->
+          <ellipse cx="60" cy="92" rx="34" ry="22" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5"/>
+          <!-- みみ -->
+          <path d="M28 38 L34 12 L52 28 Z" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M92 38 L86 12 L68 28 Z" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M33 33 L36 20 L46 29 Z" fill="#F7C7D8"/>
+          <path d="M87 33 L84 20 L74 29 Z" fill="#F7C7D8"/>
+          <!-- かお -->
+          <circle cx="60" cy="52" r="33" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5"/>
+          <!-- め -->
+          <circle cx="47" cy="50" r="4" fill="#4E5B6E"/>
+          <circle cx="73" cy="50" r="4" fill="#4E5B6E"/>
+          <circle cx="48.5" cy="48.5" r="1.3" fill="#FFFFFF"/>
+          <circle cx="74.5" cy="48.5" r="1.3" fill="#FFFFFF"/>
+          <!-- ほっぺ -->
+          <ellipse cx="38" cy="60" rx="6" ry="4" fill="#F9D0DE"/>
+          <ellipse cx="82" cy="60" rx="6" ry="4" fill="#F9D0DE"/>
+          <!-- くち ω -->
+          <path d="M54 62 Q57 66 60 62 Q63 66 66 62" fill="none" stroke="#4E5B6E" stroke-width="2" stroke-linecap="round"/>
+          <!-- まえあし -->
+          <ellipse cx="46" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5"/>
+          <ellipse cx="74" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5"/>
+          <!-- 首のリボン -->
+          <path d="M60 87 L48 80 L48 94 Z" fill="#F7A8C4"/>
+          <path d="M60 87 L72 80 L72 94 Z" fill="#F7A8C4"/>
+          <circle cx="60" cy="87" r="4.5" fill="#EC93B4"/>
+        </svg>
+      </div>
+      <div class="right">
+        <div class="bubble" id="catSay">きょうも いっしょに がんばろう♪</div>
+        <div class="score">きょう できた <b id="doneCount">0</b> こ
+          <span class="stars" id="starRow"></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="filters" id="filters"></div>
+  <main id="board"></main>
+  <div class="clearline" id="clearLine" style="display:none">
+    <button class="clearbtn" id="clearDone">✔ できたものを まとめて けす</button>
+  </div>
+
+  <details class="settings">
+    <summary>⚙ せってい・データのひっこし</summary>
+    <div class="box">
+      <button class="sbtn" id="exportBtn">💾 ほぞんファイルを つくる</button>
+      <label class="sbtn" for="importFile">📂 ほぞんファイルを よみこむ</label>
+      <input type="file" id="importFile" accept=".json,application/json">
+    </div>
+    <p class="note">データはこの端末（ブラウザ）の中に保存されます。別の端末に移すときは「ほぞんファイルをつくる」→ファイルを送って→「よみこむ」。</p>
+  </details>
+</div>
+
+<div class="addbar">
+  <div class="inner">
+    <div class="row1">
+      <input id="newText" type="text" placeholder="やることを かく" maxlength="60">
+      <button class="addbtn" id="addBtn">たす</button>
+    </div>
+    <div class="row2">
+      <select id="newCat" aria-label="しゅるい"></select>
+      <span class="duelabel">いつまで？</span>
+      <input id="newDue" type="date" aria-label="きげん（なくてもOK）">
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var KEY = "yarukoto-board-v1";
+  var CATS = [
+    { id: "shukudai",  label: "しゅくだい",  varname: "--c-shukudai" },
+    { id: "otetsudai", label: "おてつだい",  varname: "--c-otetsudai" },
+    { id: "naraigoto", label: "ならいごと",  varname: "--c-naraigoto" },
+    { id: "gakkou",    label: "がっこうのじゅんび", varname: "--c-gakkou" },
+    { id: "yarukoto",  label: "そのほかのやること", varname: "--c-yarukoto" }
+  ];
+  var WD = ["にち", "げつ", "か", "すい", "もく", "きん", "ど"];
+  var filter = "all";
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return null;
+  }
+  function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
+
+  var state = load();
+  if (!state) {
+    state = { tasks: [
+      t("こくごの プリント", "shukudai"),
+      t("しょっきを はこぶ", "otetsudai"),
+      t("スイミングの じゅんび（みずぎ・タオル・ゴーグル）", "naraigoto"),
+      t("たいそうふくを ランドセルに いれる", "gakkou"),
+      t("じむしょに でんわ", "yarukoto")
+    ] };
+    save();
+  }
+  function t(text, cat) {
+    return { id: Date.now() + "-" + Math.random().toString(36).slice(2, 7),
+      text: text, cat: cat, due: "", done: false, doneAt: 0, created: Date.now() };
+  }
+  function todayStr() {
+    var d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  function esc(s) {
+    return s.replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  /* ---- 描画 ---- */
+  function render() {
+    var d = new Date();
+    document.getElementById("todayLabel").textContent =
+      (d.getMonth() + 1) + "がつ" + d.getDate() + "にち（" + WD[d.getDay()] + "）";
+
+    var chips = '<button class="fchip' + (filter === "all" ? " on" : "") + '" data-f="all">ぜんぶ</button>';
+    CATS.forEach(function (c) {
+      chips += '<button class="fchip' + (filter === c.id ? " on" : "") + '" data-f="' + c.id + '">' +
+        '<span class="dot" style="background:var(' + c.varname + ')"></span>' + c.label + "</button>";
+    });
+    document.getElementById("filters").innerHTML = chips;
+
+    var board = document.getElementById("board");
+    var html = "";
+    var visibleTotal = 0;
+    var today = todayStr();
+
+    CATS.forEach(function (c) {
+      if (filter !== "all" && filter !== c.id) return;
+      var list = state.tasks.filter(function (x) { return x.cat === c.id; });
+      if (!list.length) return;
+      visibleTotal += list.length;
+      list.sort(function (a, b) {
+        if (a.done !== b.done) return a.done ? 1 : -1;
+        if (a.due !== b.due) {
+          if (!a.due) return 1;
+          if (!b.due) return -1;
+          return a.due < b.due ? -1 : 1;
+        }
+        return a.created - b.created;
+      });
+      var rest = list.filter(function (x) { return !x.done; }).length;
+      html += '<div class="section"><div class="sechead">' +
+        '<span class="dot" style="background:var(' + c.varname + ')"></span>' +
+        '<span class="name">' + c.label + '</span>' +
+        '<span class="rest">のこり ' + rest + "</span></div><div class=\"tasklist\">";
+      list.forEach(function (x) {
+        var dueHtml = "";
+        if (x.due) {
+          var cls = x.due < today ? "over" : (x.due === today ? "today" : "");
+          var lbl = x.due < today ? "すぎてる！" : (x.due === today ? "きょうまで！" : "まで");
+          var p = x.due.split("-");
+          dueHtml = '<span class="due ' + cls + '">' + Number(p[1]) + "/" + Number(p[2]) + " " + lbl + "</span>";
+        }
+        html += '<div class="task' + (x.done ? " done" : "") + '" data-id="' + x.id + '" style="--catcolor:var(' + c.varname + ')">' +
+          '<button class="check" aria-label="できた">✓</button>' +
+          '<div class="body"><div class="text">' + esc(x.text) + "</div>" + dueHtml + "</div>" +
+          '<button class="del" aria-label="けす">✕</button></div>';
+      });
+      html += "</div></div>";
+    });
+
+    if (!visibleTotal) html = '<div class="empty">まだ なにも ないよ。<br>したの らんから たしてね 👇</div>';
+    board.innerHTML = html;
+
+    var doneToday = state.tasks.filter(function (x) {
+      return x.done && new Date(x.doneAt).toDateString() === new Date().toDateString();
+    }).length;
+    document.getElementById("doneCount").textContent = doneToday;
+    var stars = "";
+    for (var i = 0; i < Math.min(doneToday, 10); i++) stars += "⭐";
+    document.getElementById("starRow").textContent = stars;
+
+    var hasTasks = state.tasks.length > 0;
+    var allDone = hasTasks && state.tasks.every(function (x) { return x.done; });
+    var say;
+    if (allDone) say = "ぜんぶ できた！ えらい！！ 🎀";
+    else if (doneToday >= 5) say = "すごい すごい！ その ちょうし♪";
+    else if (doneToday > 0) say = "いいね！ つぎも がんばろう♪";
+    else say = "きょうも いっしょに がんばろう♪";
+    document.getElementById("catSay").textContent = say;
+
+    document.getElementById("clearLine").style.display =
+      state.tasks.some(function (x) { return x.done; }) ? "" : "none";
+  }
+
+  /* ---- 操作 ---- */
+  document.getElementById("filters").addEventListener("click", function (e) {
+    var b = e.target.closest(".fchip");
+    if (!b) return;
+    filter = b.getAttribute("data-f");
+    render();
+  });
+
+  document.getElementById("board").addEventListener("click", function (e) {
+    var row = e.target.closest(".task");
+    if (!row) return;
+    var id = row.getAttribute("data-id");
+    var task = state.tasks.find(function (x) { return x.id === id; });
+    if (!task) return;
+    if (e.target.closest(".del")) {
+      state.tasks = state.tasks.filter(function (x) { return x.id !== id; });
+      save(); render(); return;
+    }
+    if (e.target.closest(".check")) {
+      task.done = !task.done;
+      task.doneAt = task.done ? Date.now() : 0;
+      save();
+      if (task.done) {
+        row.classList.add("justdone");
+        var s = document.createElement("span");
+        s.className = "flystar"; s.textContent = "⭐";
+        row.appendChild(s);
+        setTimeout(render, 450);
+      } else render();
+    }
+  });
+
+  function addTask() {
+    var inp = document.getElementById("newText");
+    var text = inp.value.trim();
+    if (!text) { inp.focus(); return; }
+    var task = t(text, document.getElementById("newCat").value);
+    task.due = document.getElementById("newDue").value || "";
+    state.tasks.push(task);
+    save();
+    inp.value = "";
+    document.getElementById("newDue").value = "";
+    render();
+    inp.focus();
+  }
+  document.getElementById("addBtn").addEventListener("click", addTask);
+  document.getElementById("newText").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") addTask();
+  });
+
+  document.getElementById("clearDone").addEventListener("click", function () {
+    state.tasks = state.tasks.filter(function (x) { return !x.done; });
+    save(); render();
+  });
+
+  /* ---- ひっこし ---- */
+  document.getElementById("exportBtn").addEventListener("click", function () {
+    var blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "やることボード_ほぞん_" + todayStr() + ".json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+  document.getElementById("importFile").addEventListener("change", function (e) {
+    var f = e.target.files[0];
+    if (!f) return;
+    var r = new FileReader();
+    r.onload = function () {
+      try {
+        var data = JSON.parse(r.result);
+        if (!data || !Array.isArray(data.tasks)) throw new Error("bad");
+        state = data; save(); render();
+        alert("よみこみ できました！");
+      } catch (err) {
+        alert("このファイルは よみこめませんでした。「ほぞんファイルをつくる」で作ったファイルを選んでください。");
+      }
+      e.target.value = "";
+    };
+    r.readAsText(f);
+  });
+
+  /* ---- 初期化 ---- */
+  var sel = document.getElementById("newCat");
+  CATS.forEach(function (c) {
+    var o = document.createElement("option");
+    o.value = c.id; o.textContent = c.label;
+    sel.appendChild(o);
+  });
+  render();
+})();
+</script>
+
+</html>

@@ -1,48 +1,48 @@
-<!DOCTYPE html>
-<html lang="ja">
-<meta charset="utf-8">
 <title>フラッシュけいさん</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
 <style>
   :root {
-    --bg: #EAF3FC;
+    --bg: #FFFDF7;
+    --bg-deco: #F8EEDA;
     --card: #FFFFFF;
-    --ink: #4E5B6E;
-    --muted: #8CA0B3;
-    --line: #D5E4F2;
-    --accent: #6FAEE8;
+    --ink: #5B4A3F;
+    --muted: #A08D7C;
+    --line: #EBDFC8;
+    --accent: #E08A3C;
     --accent-ink: #FFFFFF;
     --star: #FFCF5C;
-    --good: #5BC8AF;
-    --bad: #F27D93;
-    --bubble: #FFF6FA;
-    --m-tashi: #EC93B4;
-    --m-hiki: #5BC8AF;
-    --m-maze: #F5A25D;
-    --m-kazu: #A995E8;
-    --shadow: 0 2px 4px rgba(111,174,232,.12), 0 6px 18px rgba(111,174,232,.10);
+    --good: #5E9C56;
+    --bad: #E0798F;
+    --bubble: #FBF3E0;
+    --lock: #C9BCA9;
+    --lock-ink: #6E5A45;
+    --m-tashi: #E997AE;
+    --m-hiki: #5E9C56;
+    --m-maze: #E08A3C;
+    --m-kazu: #A794CE;
+    --shadow: 0 2px 4px rgba(181,114,47,.12), 0 6px 18px rgba(181,114,47,.10);
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #222B39; --card: #2E3948; --ink: #E4EBF4; --muted: #93A5B8;
-      --line: #405062; --accent: #82B8EC; --accent-ink: #17222F; --star: #FFD97A;
-      --good: #6FD3BB; --bad: #F393A5; --bubble: #3A4556;
-      --m-tashi: #F0A3C0; --m-hiki: #6FD3BB; --m-maze: #F5B173; --m-kazu: #B7A5EE;
+      --bg: #252B23; --bg-deco: #2C332A; --card: #333C30; --ink: #F2EBDC; --muted: #A9A18C;
+      --line: #4A5340; --accent: #E89B55; --accent-ink: #2A2314; --star: #FFD97A;
+      --good: #85C07B; --bad: #E893A5; --bubble: #3A4435; --lock: #6B7261; --lock-ink: #C7BCA6;
+      --m-tashi: #EFA9BE; --m-hiki: #85C07B; --m-maze: #ECA36A; --m-kazu: #BCA9E0;
       --shadow: 0 2px 6px rgba(0,0,0,.35);
     }
   }
   :root[data-theme="light"] {
-    --bg: #EAF3FC; --card: #FFFFFF; --ink: #4E5B6E; --muted: #8CA0B3;
-    --line: #D5E4F2; --accent: #6FAEE8; --accent-ink: #FFFFFF; --star: #FFCF5C;
-    --good: #5BC8AF; --bad: #F27D93; --bubble: #FFF6FA;
-    --m-tashi: #EC93B4; --m-hiki: #5BC8AF; --m-maze: #F5A25D; --m-kazu: #A995E8;
-    --shadow: 0 2px 4px rgba(111,174,232,.12), 0 6px 18px rgba(111,174,232,.10);
+    --bg: #FFFDF7; --bg-deco: #F8EEDA; --card: #FFFFFF; --ink: #5B4A3F; --muted: #A08D7C;
+    --line: #EBDFC8; --accent: #E08A3C; --accent-ink: #FFFFFF; --star: #FFCF5C;
+    --good: #5E9C56; --bad: #E0798F; --bubble: #FBF3E0; --lock: #C9BCA9; --lock-ink: #6E5A45;
+    --m-tashi: #E997AE; --m-hiki: #5E9C56; --m-maze: #E08A3C; --m-kazu: #A794CE;
+    --shadow: 0 2px 4px rgba(181,114,47,.12), 0 6px 18px rgba(181,114,47,.10);
   }
   :root[data-theme="dark"] {
-    --bg: #222B39; --card: #2E3948; --ink: #E4EBF4; --muted: #93A5B8;
-    --line: #405062; --accent: #82B8EC; --accent-ink: #17222F; --star: #FFD97A;
-    --good: #6FD3BB; --bad: #F393A5; --bubble: #3A4556;
-    --m-tashi: #F0A3C0; --m-hiki: #6FD3BB; --m-maze: #F5B173; --m-kazu: #B7A5EE;
+    --bg: #252B23; --bg-deco: #2C332A; --card: #333C30; --ink: #F2EBDC; --muted: #A9A18C;
+    --line: #4A5340; --accent: #E89B55; --accent-ink: #2A2314; --star: #FFD97A;
+    --good: #85C07B; --bad: #E893A5; --bubble: #3A4435; --lock: #6B7261; --lock-ink: #C7BCA6;
+    --m-tashi: #EFA9BE; --m-hiki: #85C07B; --m-maze: #ECA36A; --m-kazu: #BCA9E0;
     --shadow: 0 2px 6px rgba(0,0,0,.35);
   }
 
@@ -50,6 +50,11 @@
   html, body { height: 100%; }
   body {
     margin: 0; background: var(--bg); color: var(--ink);
+    background-image:
+      radial-gradient(ellipse 90px 46px at 12% 60px, var(--bg-deco) 98%, transparent),
+      radial-gradient(ellipse 120px 56px at 88% 130px, var(--bg-deco) 98%, transparent),
+      radial-gradient(ellipse 80px 40px at 30% 240px, var(--bg-deco) 98%, transparent);
+    background-repeat: no-repeat;
     font-family: "UD デジタル 教科書体 N-R", "UD Digi Kyokasho N-R",
       "Hiragino Maru Gothic ProN", "BIZ UDGothic", "Noto Sans JP",
       "Yu Gothic", sans-serif;
@@ -84,10 +89,14 @@
   }
   .modebtn .best { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
   .modebtn:active { transform: scale(.98); }
+  .modebtn.locked { flex-wrap: wrap; border-left-color: var(--lock); box-shadow: none; background: var(--bg-deco); color: var(--lock-ink); }
+  .modebtn.locked .best { flex: 1 1 100%; white-space: normal; line-height: 1.5; font-size: 14px; color: var(--lock-ink); }
+  .modebtn.deny { animation: shake .3s ease; }
+  @media (prefers-reduced-motion: reduce) { .modebtn.deny { animation: none; } }
 
   /* ---- ゲーム ---- */
   .gametop { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
-  .quit { border: 2px solid var(--line); background: var(--card); color: var(--muted); border-radius: 999px; padding: 6px 14px; font-size: 14px; }
+  .quit { border: 2px solid var(--line); background: var(--card); color: var(--muted); border-radius: 999px; padding: 11px 16px; font-size: 14px; }
   .prog { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; }
   .gamestars { font-size: 15px; letter-spacing: 1px; min-height: 20px; text-align: center; }
   .qcard {
@@ -131,6 +140,12 @@
     border-radius: 999px; padding: 6px 18px; font-size: 16px;
   }
   .bestbadge.show { display: block; }
+  .unlockbadge {
+    display: none; margin: 10px auto 0; width: fit-content;
+    background: var(--good); color: #FFFFFF; font-weight: bold;
+    border-radius: 999px; padding: 6px 18px; font-size: 16px;
+  }
+  .unlockbadge.show { display: block; }
   .rcat { width: 96px; margin: 10px auto 0; }
   .rbubble {
     background: var(--bubble); border: 2px solid var(--line); border-radius: 16px;
@@ -144,7 +159,7 @@
   .bigbtn.ghost { background: var(--card); color: var(--ink); border: 2.5px solid var(--line); font-weight: normal; }
 
   .soundline { text-align: center; margin-top: 14px; }
-  .soundbtn { border: 2px solid var(--line); background: var(--card); color: var(--muted); border-radius: 999px; padding: 6px 16px; font-size: 13px; }
+  .soundbtn { border: 2px solid var(--line); background: var(--card); color: var(--muted); border-radius: 999px; padding: 11px 18px; font-size: 13px; }
 
   .flystar { position: absolute; font-size: 30px; pointer-events: none; animation: fly .8s ease forwards; left: 50%; top: 30%; }
   @keyframes fly { 0% { opacity: 1; transform: translate(-50%,0) scale(.8); } 100% { opacity: 0; transform: translate(-50%,-60px) scale(1.6); } }
@@ -207,6 +222,7 @@
       <h2 id="rmsg"></h2>
       <div class="rtime" id="rtime"></div>
       <div class="bestbadge" id="bestBadge">🏆 じぶんベスト こうしん！</div>
+      <div class="unlockbadge" id="unlockBadge"></div>
       <div class="rcat" aria-hidden="true" id="resultCat"></div>
       <div class="rbubble" id="rsay"></div>
       <div class="rbtns">
@@ -226,22 +242,28 @@
   };
   var N_Q = 10;
 
+  /* ---- 難易度ロック：パーフェクトで次のモードが開く ---- */
+  var ALWAYS_OPEN = { tashi: true, kazu: true };
+  var UNLOCK_NEXT = { tashi: "hiki", hiki: "maze" };
+  var LOCK_HINT = { hiki: "たしざん", maze: "ひきざん" };
+  function isOpen(mode) { return !!(ALWAYS_OPEN[mode] || data.unlocked[mode]); }
+
   /* ---- 白猫マスコット（やることボードと同じ子） ---- */
   var CAT_SVG = '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">' +
-    '<path d="M97 88 Q114 84 110 68 Q108 60 100 62" fill="none" stroke="#B9D9F5" stroke-width="9" stroke-linecap="round"/>' +
-    '<ellipse cx="60" cy="92" rx="34" ry="22" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5"/>' +
-    '<path d="M28 38 L34 12 L52 28 Z" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5" stroke-linejoin="round"/>' +
-    '<path d="M92 38 L86 12 L68 28 Z" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5" stroke-linejoin="round"/>' +
-    '<path d="M33 33 L36 20 L46 29 Z" fill="#F7C7D8"/><path d="M87 33 L84 20 L74 29 Z" fill="#F7C7D8"/>' +
-    '<circle cx="60" cy="52" r="33" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5"/>' +
-    '<circle cx="47" cy="50" r="4" fill="#4E5B6E"/><circle cx="73" cy="50" r="4" fill="#4E5B6E"/>' +
+    '<path d="M97 88 Q114 84 110 68 Q108 60 100 62" fill="none" stroke="#E6D8BF" stroke-width="9" stroke-linecap="round"/>' +
+    '<ellipse cx="60" cy="92" rx="34" ry="22" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+    '<path d="M28 38 L34 12 L52 28 Z" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5" stroke-linejoin="round"/>' +
+    '<path d="M92 38 L86 12 L68 28 Z" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5" stroke-linejoin="round"/>' +
+    '<path d="M33 33 L36 20 L46 29 Z" fill="#F6C6CF"/><path d="M87 33 L84 20 L74 29 Z" fill="#F6C6CF"/>' +
+    '<circle cx="60" cy="52" r="33" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+    '<circle cx="47" cy="50" r="4" fill="#5B4A3F"/><circle cx="73" cy="50" r="4" fill="#5B4A3F"/>' +
     '<circle cx="48.5" cy="48.5" r="1.3" fill="#FFFFFF"/><circle cx="74.5" cy="48.5" r="1.3" fill="#FFFFFF"/>' +
-    '<ellipse cx="38" cy="60" rx="6" ry="4" fill="#F9D0DE"/><ellipse cx="82" cy="60" rx="6" ry="4" fill="#F9D0DE"/>' +
-    '<path d="M54 62 Q57 66 60 62 Q63 66 66 62" fill="none" stroke="#4E5B6E" stroke-width="2" stroke-linecap="round"/>' +
-    '<ellipse cx="46" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5"/>' +
-    '<ellipse cx="74" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5"/>' +
-    '<path d="M60 87 L48 80 L48 94 Z" fill="#F7A8C4"/><path d="M60 87 L72 80 L72 94 Z" fill="#F7A8C4"/>' +
-    '<circle cx="60" cy="87" r="4.5" fill="#EC93B4"/></svg>';
+    '<ellipse cx="38" cy="60" rx="6" ry="4" fill="#F6C6CF"/><ellipse cx="82" cy="60" rx="6" ry="4" fill="#F6C6CF"/>' +
+    '<path d="M54 62 Q57 66 60 62 Q63 66 66 62" fill="none" stroke="#5B4A3F" stroke-width="2" stroke-linecap="round"/>' +
+    '<ellipse cx="46" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+    '<ellipse cx="74" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+    '<path d="M60 87 L48 80 L48 94 Z" fill="#F4A9BE"/><path d="M60 87 L72 80 L72 94 Z" fill="#F4A9BE"/>' +
+    '<circle cx="60" cy="87" r="4.5" fill="#E997AE"/></svg>';
   document.getElementById("homeCat").innerHTML = CAT_SVG;
   document.getElementById("resultCat").innerHTML = CAT_SVG;
 
@@ -252,6 +274,9 @@
   }
   function saveData() { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {} }
   var data = loadData();
+  if (!data.unlocked) data.unlocked = {};
+  // ロック機能より前から記録があるモードは、あそべたままにする
+  for (var mk in data.best) { if (data.best[mk]) data.unlocked[mk] = true; }
 
   /* ---- おと（WebAudio・こわれても無視） ---- */
   var actx = null;
@@ -316,8 +341,17 @@
   function renderHome() {
     for (var k in MODES) {
       var el = document.getElementById("best-" + k);
-      var b = data.best[k];
-      el.textContent = b ? "ベスト：" + b.correct + "もん・" + fmtTime(b.timeMs) : "";
+      var btn = document.querySelector('.modebtn[data-mode="' + k + '"]');
+      if (!isOpen(k)) {
+        btn.classList.add("locked");
+        btn.setAttribute("aria-disabled", "true");
+        el.textContent = "🔒 " + LOCK_HINT[k] + "で パーフェクトを とると ひらくよ";
+      } else {
+        btn.classList.remove("locked");
+        btn.removeAttribute("aria-disabled");
+        var b = data.best[k];
+        el.textContent = b ? "ベスト：" + b.correct + "もん・" + fmtTime(b.timeMs) : "";
+      }
     }
     document.getElementById("soundBtn").textContent = data.sound ? "🔔 おと：オン" : "🔕 おと：オフ";
   }
@@ -329,7 +363,17 @@
   var game = null;
   document.querySelector(".modes").addEventListener("click", function (e) {
     var b = e.target.closest(".modebtn"); if (!b) return;
-    startGame(b.getAttribute("data-mode"));
+    var mode = b.getAttribute("data-mode");
+    if (!isOpen(mode)) {
+      document.getElementById("homeSay").textContent =
+        "「" + LOCK_HINT[mode] + "」で パーフェクト（ぜんぶ せいかい）を とると ひらくよ！";
+      b.classList.remove("deny");
+      void b.offsetWidth;
+      b.classList.add("deny");
+      setTimeout(function () { b.classList.remove("deny"); }, 350);
+      return;
+    }
+    startGame(mode);
   });
   function startGame(mode) {
     game = { mode: mode, qs: makeSet(mode), idx: 0, correct: 0, input: "", start: Date.now(), busy: false };
@@ -410,6 +454,15 @@
     if (isBest) { data.best[game.mode] = { correct: game.correct, timeMs: timeMs }; saveData(); }
     document.getElementById("bestBadge").className = "bestbadge" + (isBest ? " show" : "");
 
+    var unlockedName = "";
+    if (game.correct === N_Q) {
+      var nx = UNLOCK_NEXT[game.mode];
+      if (nx && !isOpen(nx)) { data.unlocked[nx] = true; saveData(); unlockedName = MODES[nx]; }
+    }
+    var ub = document.getElementById("unlockBadge");
+    ub.textContent = unlockedName ? "🔓 「" + unlockedName + "」が あそべるように なったよ！" : "";
+    ub.className = "unlockbadge" + (unlockedName ? " show" : "");
+
     var say;
     if (game.correct === N_Q) { say = "パーフェクト！！ てんさい！！"; beep("fanfare"); }
     else if (game.correct >= 8) say = "すごい！ あと ちょっとで パーフェクト！";
@@ -428,5 +481,3 @@
   renderHome();
 })();
 </script>
-
-</html>

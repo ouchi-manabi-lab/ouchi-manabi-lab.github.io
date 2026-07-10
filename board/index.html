@@ -1,65 +1,66 @@
-<!DOCTYPE html>
-<html lang="ja">
-<meta charset="utf-8">
 <title>おうちのやることボード</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <style>
   :root {
-    --bg: #EAF3FC;
-    --bg-deco: #DDEBF9;
+    --bg: #FFFDF7;
+    --bg-deco: #F8EEDA;
     --card: #FFFFFF;
-    --ink: #4E5B6E;
-    --muted: #8CA0B3;
-    --line: #D5E4F2;
-    --accent: #6FAEE8;
+    --ink: #5B4A3F;
+    --muted: #A08D7C;
+    --line: #EBDFC8;
+    --accent: #E08A3C;
     --accent-ink: #FFFFFF;
     --star: #FFCF5C;
-    --danger: #F27D93;
-    --chip-bg: #E3EEFA;
-    --bubble: #FFF6FA;
-    --c-shukudai: #EC93B4;
-    --c-otetsudai: #F5A25D;
-    --c-naraigoto: #5BC8AF;
-    --c-gakkou: #6FAEE8;
-    --c-yarukoto: #A995E8;
-    --shadow: 0 2px 4px rgba(111,174,232,.12), 0 6px 18px rgba(111,174,232,.10);
+    --danger: #E0798F;
+    --over-bg: #B84E63;
+    --over-ink: #FFFFFF;
+    --chip-bg: #F5E9D4;
+    --bubble: #FBF3E0;
+    --c-shukudai: #E997AE;
+    --c-otetsudai: #E08A3C;
+    --c-naraigoto: #5E9C56;
+    --c-gakkou: #7FB4D8;
+    --c-yarukoto: #A794CE;
+    --shadow: 0 2px 4px rgba(181,114,47,.12), 0 6px 18px rgba(181,114,47,.10);
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #222B39;
-      --bg-deco: #283344;
-      --card: #2E3948;
-      --ink: #E4EBF4;
-      --muted: #93A5B8;
-      --line: #405062;
-      --accent: #82B8EC;
-      --accent-ink: #17222F;
+      --bg: #252B23;
+      --bg-deco: #2C332A;
+      --card: #333C30;
+      --ink: #F2EBDC;
+      --muted: #A9A18C;
+      --line: #4A5340;
+      --accent: #E89B55;
+      --accent-ink: #2A2314;
       --star: #FFD97A;
-      --danger: #F393A5;
-      --chip-bg: #38455736;
-      --bubble: #3A4556;
-      --c-shukudai: #F0A3C0;
-      --c-otetsudai: #F5B173;
-      --c-naraigoto: #6FD3BB;
-      --c-gakkou: #82B8EC;
-      --c-yarukoto: #B7A5EE;
+      --danger: #E893A5;
+      --over-bg: #E893A5;
+      --over-ink: #3A2A2E;
+      --chip-bg: #454F3E;
+      --bubble: #3A4435;
+      --c-shukudai: #EFA9BE;
+      --c-otetsudai: #ECA36A;
+      --c-naraigoto: #85C07B;
+      --c-gakkou: #9CC3E0;
+      --c-yarukoto: #BCA9E0;
       --shadow: 0 2px 6px rgba(0,0,0,.35);
     }
   }
   :root[data-theme="light"] {
-    --bg: #EAF3FC; --bg-deco: #DDEBF9; --card: #FFFFFF; --ink: #4E5B6E;
-    --muted: #8CA0B3; --line: #D5E4F2; --accent: #6FAEE8; --accent-ink: #FFFFFF;
-    --star: #FFCF5C; --danger: #F27D93; --chip-bg: #E3EEFA; --bubble: #FFF6FA;
-    --c-shukudai: #EC93B4; --c-otetsudai: #F5A25D; --c-naraigoto: #5BC8AF;
-    --c-gakkou: #6FAEE8; --c-yarukoto: #A995E8;
-    --shadow: 0 2px 4px rgba(111,174,232,.12), 0 6px 18px rgba(111,174,232,.10);
+    --bg: #FFFDF7; --bg-deco: #F8EEDA; --card: #FFFFFF; --ink: #5B4A3F;
+    --muted: #A08D7C; --line: #EBDFC8; --accent: #E08A3C; --accent-ink: #FFFFFF;
+    --star: #FFCF5C; --danger: #E0798F; --over-bg: #B84E63; --over-ink: #FFFFFF; --chip-bg: #F5E9D4; --bubble: #FBF3E0;
+    --c-shukudai: #E997AE; --c-otetsudai: #E08A3C; --c-naraigoto: #5E9C56;
+    --c-gakkou: #7FB4D8; --c-yarukoto: #A794CE;
+    --shadow: 0 2px 4px rgba(181,114,47,.12), 0 6px 18px rgba(181,114,47,.10);
   }
   :root[data-theme="dark"] {
-    --bg: #222B39; --bg-deco: #283344; --card: #2E3948; --ink: #E4EBF4;
-    --muted: #93A5B8; --line: #405062; --accent: #82B8EC; --accent-ink: #17222F;
-    --star: #FFD97A; --danger: #F393A5; --chip-bg: #38455736; --bubble: #3A4556;
-    --c-shukudai: #F0A3C0; --c-otetsudai: #F5B173; --c-naraigoto: #6FD3BB;
-    --c-gakkou: #82B8EC; --c-yarukoto: #B7A5EE;
+    --bg: #252B23; --bg-deco: #2C332A; --card: #333C30; --ink: #F2EBDC;
+    --muted: #A9A18C; --line: #4A5340; --accent: #E89B55; --accent-ink: #2A2314;
+    --star: #FFD97A; --danger: #E893A5; --over-bg: #E893A5; --over-ink: #3A2A2E; --chip-bg: #454F3E; --bubble: #3A4435;
+    --c-shukudai: #EFA9BE; --c-otetsudai: #ECA36A; --c-naraigoto: #85C07B;
+    --c-gakkou: #9CC3E0; --c-yarukoto: #BCA9E0;
     --shadow: 0 2px 6px rgba(0,0,0,.35);
   }
 
@@ -97,7 +98,7 @@
   .herocard .right { flex: 1 1 auto; min-width: 0; }
   .bubble {
     position: relative; background: var(--bubble); border: 2px solid var(--line);
-    border-radius: 16px; padding: 8px 12px; font-size: 15px; line-height: 1.5;
+    border-radius: 16px; padding: 8px 12px; font-size: 16px; line-height: 1.5;
   }
   .bubble::before {
     content: ""; position: absolute; left: -9px; top: 50%; margin-top: -6px;
@@ -138,14 +139,14 @@
     position: relative;
   }
   .check {
-    flex: 0 0 auto; width: 40px; height: 40px; border-radius: 50%;
+    flex: 0 0 auto; width: 44px; height: 44px; border-radius: 50%;
     border: 3px solid var(--catcolor, var(--muted)); background: transparent;
     font-size: 20px; line-height: 1; color: transparent; cursor: pointer;
     display: flex; align-items: center; justify-content: center; padding: 0;
   }
   .task.done .check { background: var(--catcolor); border-color: var(--catcolor); color: #fff; }
   .task .body { flex: 1 1 auto; min-width: 0; }
-  .task .text { font-size: 17px; line-height: 1.45; word-break: break-word; }
+  .task .text { font-size: 18px; line-height: 1.45; word-break: break-word; }
   .task.done .text { text-decoration: line-through; color: var(--muted); }
   .due {
     display: inline-block; margin-top: 3px; font-size: 12.5px;
@@ -153,7 +154,7 @@
     border-radius: 999px; padding: 2px 10px; font-variant-numeric: tabular-nums;
   }
   .due.today { background: var(--star); color: #5C4400; font-weight: bold; }
-  .due.over { background: var(--danger); color: #fff; font-weight: bold; }
+  .due.over { background: var(--over-bg); color: var(--over-ink); font-weight: bold; }
   .del {
     flex: 0 0 auto; border: none; background: none; color: var(--muted);
     font-size: 16px; cursor: pointer; padding: 8px 6px; font-family: inherit;
@@ -183,7 +184,7 @@
     position: fixed; left: 0; right: 0; bottom: 0;
     background: var(--card); border-top: 2.5px solid var(--line);
     padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
-    box-shadow: 0 -4px 16px rgba(111,174,232,.14);
+    box-shadow: 0 -4px 16px rgba(181,114,47,.14);
   }
   .addbar .inner { max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 8px; }
   .row1 { display: flex; gap: 8px; }
@@ -233,33 +234,33 @@
       <div class="cat" aria-hidden="true">
         <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
           <!-- しっぽ -->
-          <path d="M97 88 Q114 84 110 68 Q108 60 100 62" fill="none" stroke="#B9D9F5" stroke-width="9" stroke-linecap="round"/>
+          <path d="M97 88 Q114 84 110 68 Q108 60 100 62" fill="none" stroke="#E6D8BF" stroke-width="9" stroke-linecap="round"/>
           <!-- からだ -->
-          <ellipse cx="60" cy="92" rx="34" ry="22" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5"/>
+          <ellipse cx="60" cy="92" rx="34" ry="22" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>
           <!-- みみ -->
-          <path d="M28 38 L34 12 L52 28 Z" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5" stroke-linejoin="round"/>
-          <path d="M92 38 L86 12 L68 28 Z" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5" stroke-linejoin="round"/>
-          <path d="M33 33 L36 20 L46 29 Z" fill="#F7C7D8"/>
-          <path d="M87 33 L84 20 L74 29 Z" fill="#F7C7D8"/>
+          <path d="M28 38 L34 12 L52 28 Z" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M92 38 L86 12 L68 28 Z" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M33 33 L36 20 L46 29 Z" fill="#F6C6CF"/>
+          <path d="M87 33 L84 20 L74 29 Z" fill="#F6C6CF"/>
           <!-- かお -->
-          <circle cx="60" cy="52" r="33" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5"/>
+          <circle cx="60" cy="52" r="33" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>
           <!-- め -->
-          <circle cx="47" cy="50" r="4" fill="#4E5B6E"/>
-          <circle cx="73" cy="50" r="4" fill="#4E5B6E"/>
+          <circle cx="47" cy="50" r="4" fill="#5B4A3F"/>
+          <circle cx="73" cy="50" r="4" fill="#5B4A3F"/>
           <circle cx="48.5" cy="48.5" r="1.3" fill="#FFFFFF"/>
           <circle cx="74.5" cy="48.5" r="1.3" fill="#FFFFFF"/>
           <!-- ほっぺ -->
-          <ellipse cx="38" cy="60" rx="6" ry="4" fill="#F9D0DE"/>
-          <ellipse cx="82" cy="60" rx="6" ry="4" fill="#F9D0DE"/>
+          <ellipse cx="38" cy="60" rx="6" ry="4" fill="#F6C6CF"/>
+          <ellipse cx="82" cy="60" rx="6" ry="4" fill="#F6C6CF"/>
           <!-- くち ω -->
-          <path d="M54 62 Q57 66 60 62 Q63 66 66 62" fill="none" stroke="#4E5B6E" stroke-width="2" stroke-linecap="round"/>
+          <path d="M54 62 Q57 66 60 62 Q63 66 66 62" fill="none" stroke="#5B4A3F" stroke-width="2" stroke-linecap="round"/>
           <!-- まえあし -->
-          <ellipse cx="46" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5"/>
-          <ellipse cx="74" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#B9D9F5" stroke-width="2.5"/>
+          <ellipse cx="46" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>
+          <ellipse cx="74" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>
           <!-- 首のリボン -->
-          <path d="M60 87 L48 80 L48 94 Z" fill="#F7A8C4"/>
-          <path d="M60 87 L72 80 L72 94 Z" fill="#F7A8C4"/>
-          <circle cx="60" cy="87" r="4.5" fill="#EC93B4"/>
+          <path d="M60 87 L48 80 L48 94 Z" fill="#F4A9BE"/>
+          <path d="M60 87 L72 80 L72 94 Z" fill="#F4A9BE"/>
+          <circle cx="60" cy="87" r="4.5" fill="#E997AE"/>
         </svg>
       </div>
       <div class="right">
@@ -518,5 +519,3 @@
   render();
 })();
 </script>
-
-</html>

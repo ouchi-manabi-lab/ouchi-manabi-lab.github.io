@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="370" height="320" viewBox="0 0 370 320">
+  <g stroke="#4E3620" stroke-width="3" stroke-linecap="round">
+    <circle cx="56" cy="112" r="20" fill="#FCD98C"/>
+    <line x1="83" y1="112" x2="91" y2="112"/><line x1="75.09188309203678" y1="131.09188309203677" x2="80.74873734152916" y2="136.74873734152916"/><line x1="56" y1="139" x2="56" y2="147"/><line x1="36.90811690796322" y1="131.0918830920368" x2="31.25126265847084" y2="136.74873734152916"/><line x1="29" y1="112" x2="21" y2="112"/><line x1="36.90811690796321" y1="92.90811690796322" x2="31.251262658470832" y2="87.25126265847084"/><line x1="55.99999999999999" y1="85" x2="55.99999999999999" y2="77"/><line x1="75.09188309203678" y1="92.9081169079632" x2="80.74873734152916" y2="87.25126265847084"/>
+  </g><g transform="rotate(0 185 210)">
+    <ellipse cx="105" cy="150" rx="15" ry="36" fill="#A9CBE8" stroke="#4E3620" stroke-width="4"
+       transform="rotate(-35 105 150)"/>
+    <ellipse cx="265" cy="150" rx="15" ry="36" fill="#A9CBE8" stroke="#4E3620" stroke-width="4"
+       transform="rotate(35 265 150)"/>
+    <!-- 足 -->
+    <ellipse cx="152" cy="302" rx="18" ry="9" fill="#F2B98C" stroke="#4E3620" stroke-width="3.5"/>
+    <ellipse cx="218" cy="302" rx="18" ry="9" fill="#F2B98C" stroke="#4E3620" stroke-width="3.5"/>
+    <!-- 体(頭と一体のまんまる) -->
+    <ellipse cx="185" cy="206" rx="92" ry="96" fill="#A9CBE8" stroke="#4E3620" stroke-width="4"/>
+    <ellipse cx="185" cy="232" rx="58" ry="62" fill="#FCF6EC"/>
+    <!-- あほ毛 -->
+    <path d="M185,111 q-3,-13 7,-19" fill="none" stroke="#4E3620" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- 目・くちばし・ほっぺ -->
+    <path d="M140,181 Q151,168 162,181" fill="none" stroke="#4E3620" stroke-width="5" stroke-linecap="round"/>
+              <path d="M208,181 Q219,168 230,181" fill="none" stroke="#4E3620" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="185" cy="196" rx="11" ry="7.5" fill="#F2B98C" stroke="#4E3620" stroke-width="3"/>
+    <circle cx="130" cy="200" r="13.5" fill="#F5C2A8" opacity="0.85"/>
+    <circle cx="240" cy="200" r="13.5" fill="#F5C2A8" opacity="0.85"/>
+    
+    
+  </g><text x="185" y="62" font-family="'Zen Maru Gothic','Kosugi Maru','IPAPGothic','Hiragino Maru Gothic ProN',sans-serif" font-weight="700" font-size="50"
+     text-anchor="middle" fill="#543820" stroke="#FFFFFF" stroke-width="12"
+     paint-order="stroke" stroke-linejoin="round">おはよう</text></svg>

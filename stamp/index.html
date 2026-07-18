@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>ほっとけペンギン LINEスタンプ | スマホでおうち学習ラボ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="ゆるいパステルブルーのペンギン「ほっとけペンギン」のLINEスタンプ プレビュー。日常あいさつ8種+メイン・タブ画像。">
+<style>
+  :root {
+    --bg: #F7F3EC; --ink: #4A4237; --main: #7C9070; --latte: #C8A48A; --panel: #EDE6DA;
+    --chat-light: #FDFBF6; --chat-dark: #3A4351; --chat-line: #7EA5D8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #252B23; --ink: #F1EBDF; --main: #93A886; --latte: #C8A48A; --panel: #313A2E; }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Hiragino Maru Gothic ProN", "BIZ UDGothic", "Yu Gothic", "Noto Sans JP", sans-serif;
+    font-size: 16px; line-height: 1.8;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 48px 20px 64px; }
+  h1 { font-size: 24px; font-weight: 600; letter-spacing: .06em; margin: 0 0 4px; }
+  .sub { color: var(--latte); font-size: 14px; letter-spacing: .05em; margin-bottom: 28px; }
+  h2 { font-size: 16px; font-weight: 600; letter-spacing: .05em; color: var(--main); margin: 40px 0 12px; }
+  .back { font-size: 13.5px; text-decoration: none; color: var(--main); }
+
+  .bgpick { display: flex; gap: 8px; margin: 0 0 14px; flex-wrap: wrap; }
+  .bgpick button {
+    font: inherit; font-size: 13px; padding: 6px 14px; border-radius: 999px; cursor: pointer;
+    border: 1px solid rgba(124,144,112,.4); background: var(--panel); color: var(--ink);
+  }
+  .bgpick button.on { background: var(--main); color: #fff; border-color: var(--main); }
+
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px;
+  }
+  .cell {
+    border-radius: 12px; padding: 10px; border: 1px solid rgba(124,144,112,.25);
+    background: var(--chat-light); transition: background .2s;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+  }
+  .grid[data-bg="dark"] .cell { background: var(--chat-dark); }
+  .grid[data-bg="line"] .cell { background: var(--chat-line); }
+  .cell img { width: 100%; height: auto; max-width: 185px; }
+  .cell .n { font-size: 12px; opacity: .75; }
+  .grid[data-bg="dark"] .cell .n, .grid[data-bg="line"] .cell .n { color: #F1EBDF; opacity: .9; }
+
+  .meta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .meta .cell { flex: 0 0 auto; }
+  .meta .cell.main img { width: 120px; }
+  .meta .cell.tab img { width: 96px; }
+
+  table { border-collapse: collapse; font-size: 13.5px; width: 100%; }
+  th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid rgba(124,144,112,.25); }
+  th { color: var(--main); font-weight: 600; }
+  .note { font-size: 13.5px; opacity: .8; margin-top: 40px; border-top: 1px solid rgba(124,144,112,.25); padding-top: 16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../">← スマホでおうち学習ラボ</a>
+  <h1>🐧 ほっとけペンギン LINEスタンプ</h1>
+  <div class="sub">パステルブルーのゆるいペンギン。日常あいさつ8種セット</div>
+
+  <p>LINE Creators Market 申請用に作ったスタンプのプレビューです。背景色を切り替えて、トーク画面での見え方を確認できます。</p>
+
+  <h2>スタンプ 8種（370×320px・背景透過）</h2>
+  <div class="bgpick" id="bgpick">
+    <button data-bg="light" class="on">明るい背景</button>
+    <button data-bg="dark">暗い背景</button>
+    <button data-bg="line">LINEトーク風</button>
+  </div>
+  <div class="grid" id="grid" data-bg="light">
+    <div class="cell"><img src="./png/01.png" alt="おはよう"><span class="n">01 おはよう</span></div>
+    <div class="cell"><img src="./png/02.png" alt="ありがとう"><span class="n">02 ありがとう</span></div>
+    <div class="cell"><img src="./png/03.png" alt="OK!"><span class="n">03 OK!</span></div>
+    <div class="cell"><img src="./png/04.png" alt="おつかれさま"><span class="n">04 おつかれさま</span></div>
+    <div class="cell"><img src="./png/05.png" alt="ごめんね"><span class="n">05 ごめんね</span></div>
+    <div class="cell"><img src="./png/06.png" alt="いってらっしゃい"><span class="n">06 いってらっしゃい</span></div>
+    <div class="cell"><img src="./png/07.png" alt="だいすき"><span class="n">07 だいすき</span></div>
+    <div class="cell"><img src="./png/08.png" alt="おやすみ"><span class="n">08 おやすみ</span></div>
+  </div>
+
+  <h2>メイン画像・タブ画像</h2>
+  <div class="grid meta" data-bg="light">
+    <div class="cell main"><img src="./png/main.png" alt="メイン画像"><span class="n">main 240×240</span></div>
+    <div class="cell tab"><img src="./png/tab.png" alt="タブ画像"><span class="n">tab 96×74</span></div>
+  </div>
+
+  <h2>LINE申請メモ</h2>
+  <table>
+    <tr><th>画像</th><th>サイズ</th><th>ファイル</th></tr>
+    <tr><td>スタンプ画像 ×8</td><td>370×320px</td><td>01.png 〜 08.png</td></tr>
+    <tr><td>メイン画像</td><td>240×240px</td><td>main.png</td></tr>
+    <tr><td>タブ画像</td><td>96×74px</td><td>tab.png</td></tr>
+  </table>
+  <p style="font-size:13.5px; opacity:.85; margin-top:10px">
+    すべてPNG・背景透過・1MB以下。<a href="https://creator.line.me/ja/" style="color:var(--main)">LINE Creators Market</a> に登録して、この10ファイルをアップロードすれば申請できます。
+  </p>
+
+  <p class="note">
+    原画はSVG（<code>stamp/svg/</code>）、生成スクリプトは <code>stamp/build.mjs</code>。絵柄・配色はスクリプト内で固定しているので、セリフ違いの追加も同じタッチで作れます。
+  </p>
+</div>
+<script>
+  const grids = document.querySelectorAll('.grid');
+  document.querySelectorAll('#bgpick button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#bgpick button').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      grids.forEach(g => g.dataset.bg = btn.dataset.bg);
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="370" height="320" viewBox="0 0 370 320"><g transform="rotate(8 185 210)">
+    <ellipse cx="97" cy="218" rx="15" ry="36" fill="#A9CBE8" stroke="#4E3620" stroke-width="4"
+       transform="rotate(-18 97 218)"/>
+    <ellipse cx="273" cy="218" rx="15" ry="36" fill="#A9CBE8" stroke="#4E3620" stroke-width="4"
+       transform="rotate(18 273 218)"/>
+    <!-- 足 -->
+    <ellipse cx="152" cy="302" rx="18" ry="9" fill="#F2B98C" stroke="#4E3620" stroke-width="3.5"/>
+    <ellipse cx="218" cy="302" rx="18" ry="9" fill="#F2B98C" stroke="#4E3620" stroke-width="3.5"/>
+    <!-- 体(頭と一体のまんまる) -->
+    <ellipse cx="185" cy="206" rx="92" ry="96" fill="#A9CBE8" stroke="#4E3620" stroke-width="4"/>
+    <ellipse cx="185" cy="232" rx="58" ry="62" fill="#FCF6EC"/>
+    <!-- あほ毛 -->
+    <path d="M185,111 q-3,-13 7,-19" fill="none" stroke="#4E3620" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- 目・くちばし・ほっぺ -->
+    <path d="M140,181 Q151,168 162,181" fill="none" stroke="#4E3620" stroke-width="5" stroke-linecap="round"/>
+              <path d="M208,181 Q219,168 230,181" fill="none" stroke="#4E3620" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="185" cy="196" rx="11" ry="7.5" fill="#F2B98C" stroke="#4E3620" stroke-width="3"/>
+    <circle cx="130" cy="200" r="13.5" fill="#F5C2A8" opacity="0.85"/>
+    <circle cx="240" cy="200" r="13.5" fill="#F5C2A8" opacity="0.85"/>
+    
+    
+  </g><path transform="translate(300 150) scale(1.5)" fill="#FCC8B4" stroke="#4E3620" stroke-width="1.6666666666666667"
+     d="M0,6 C-2,-1 -12,-2 -12,-9 C-12,-14 -8,-16 -5,-16 C-2,-16 0,-14 0,-11 C0,-14 2,-16 5,-16 C8,-16 12,-14 12,-9 C12,-2 2,-1 0,6 Z"/><path transform="translate(318 196) scale(1)" fill="#FCC8B4" stroke="#4E3620" stroke-width="2.5"
+     d="M0,6 C-2,-1 -12,-2 -12,-9 C-12,-14 -8,-16 -5,-16 C-2,-16 0,-14 0,-11 C0,-14 2,-16 5,-16 C8,-16 12,-14 12,-9 C12,-2 2,-1 0,6 Z"/><text x="185" y="62" font-family="'Zen Maru Gothic','Kosugi Maru','IPAPGothic','Hiragino Maru Gothic ProN',sans-serif" font-weight="700" font-size="50"
+     text-anchor="middle" fill="#543820" stroke="#FFFFFF" stroke-width="12"
+     paint-order="stroke" stroke-linejoin="round">ありがとう</text></svg>

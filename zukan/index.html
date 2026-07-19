@@ -1,0 +1,174 @@
+<title>おうちアプリずかん</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+  :root {
+    --bg: #FFFDF7;
+    --bg-deco: #F8EEDA;
+    --card: #FFFFFF;
+    --ink: #5B4A3F;
+    --muted: #A08D7C;
+    --line: #EBDFC8;
+    --bubble: #FBF3E0;
+    --shadow: 0 2px 4px rgba(181,114,47,.12), 0 6px 18px rgba(181,114,47,.10);
+    --c-keisan: #E997AE;
+    --c-shinkei: #A794CE;
+    --c-tokei: #5E9C56;
+    --c-kanji: #E08A3C;
+    --c-okane: #C9A227;
+    --c-deco: #B5722F;
+    --c-board: #7FB5A0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #252B23; --bg-deco: #2C332A; --card: #333C30; --ink: #F2EBDC; --muted: #A9A18C;
+      --line: #4A5340; --bubble: #3A4435;
+      --shadow: 0 2px 6px rgba(0,0,0,.35);
+      --c-keisan: #EFA9BE; --c-shinkei: #BCA9E0; --c-tokei: #85C07B; --c-kanji: #ECA36A;
+      --c-okane: #DBBC55; --c-deco: #CE9459; --c-board: #96CCB7;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #FFFDF7; --bg-deco: #F8EEDA; --card: #FFFFFF; --ink: #5B4A3F; --muted: #A08D7C;
+    --line: #EBDFC8; --bubble: #FBF3E0;
+    --shadow: 0 2px 4px rgba(181,114,47,.12), 0 6px 18px rgba(181,114,47,.10);
+    --c-keisan: #E997AE; --c-shinkei: #A794CE; --c-tokei: #5E9C56; --c-kanji: #E08A3C;
+    --c-okane: #C9A227; --c-deco: #B5722F; --c-board: #7FB5A0;
+  }
+  :root[data-theme="dark"] {
+    --bg: #252B23; --bg-deco: #2C332A; --card: #333C30; --ink: #F2EBDC; --muted: #A9A18C;
+    --line: #4A5340; --bubble: #3A4435;
+    --shadow: 0 2px 6px rgba(0,0,0,.35);
+    --c-keisan: #EFA9BE; --c-shinkei: #BCA9E0; --c-tokei: #85C07B; --c-kanji: #ECA36A;
+    --c-okane: #DBBC55; --c-deco: #CE9459; --c-board: #96CCB7;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { min-height: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    background-image:
+      radial-gradient(ellipse 90px 46px at 12% 60px, var(--bg-deco) 98%, transparent),
+      radial-gradient(ellipse 120px 56px at 88% 130px, var(--bg-deco) 98%, transparent),
+      radial-gradient(ellipse 80px 40px at 30% 240px, var(--bg-deco) 98%, transparent);
+    background-repeat: no-repeat;
+    font-family: "UD デジタル 教科書体 N-R", "UD Digi Kyokasho N-R",
+      "Hiragino Maru Gothic ProN", "BIZ UDGothic", "Noto Sans JP",
+      "Yu Gothic", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .app { max-width: 480px; margin: 0 auto; padding: 16px 14px calc(20px + env(safe-area-inset-bottom)); }
+
+  .head { text-align: center; margin: 6px 0 4px; }
+  .head h1 { font-size: 27px; margin: 0; letter-spacing: .06em; }
+  .head .sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .cat { width: 100px; margin: 6px auto 2px; }
+  @keyframes catbob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  .cat svg { animation: catbob 3.2s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) { .cat svg { animation: none; } }
+  .bubble {
+    background: var(--bubble); border: 2px solid var(--line); border-radius: 16px;
+    padding: 8px 14px; font-size: 15px; text-align: center; margin: 0 auto 14px; max-width: 320px;
+  }
+
+  .shelf { margin: 18px 0 8px; display: flex; align-items: center; gap: 10px; }
+  .shelf .label { font-size: 17px; font-weight: bold; white-space: nowrap; }
+  .shelf .rule { flex: 1; height: 3px; border-radius: 2px; background: var(--line); }
+
+  .cards { display: flex; flex-direction: column; gap: 12px; }
+  .appcard {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--card); border-radius: 20px; padding: 14px 16px;
+    box-shadow: var(--shadow); border-left: 10px solid var(--ccolor);
+    text-decoration: none; color: var(--ink); min-height: 76px;
+  }
+  .appcard:active { transform: scale(.98); }
+  .appcard .icon {
+    font-size: 38px; line-height: 1; width: 48px; text-align: center; flex: none;
+  }
+  .appcard .txt { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .appcard .name { font-size: 20px; font-weight: bold; }
+  .appcard .desc { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+  .appcard .go { margin-left: auto; color: var(--muted); font-size: 20px; flex: none; }
+
+  .note {
+    margin-top: 22px; font-size: 12.5px; color: var(--muted); line-height: 1.8;
+    background: var(--bg-deco); border-radius: 14px; padding: 10px 14px;
+  }
+</style>
+
+<div class="app">
+  <div class="head">
+    <div class="cat" aria-hidden="true">
+      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <path d="M97 88 Q114 84 110 68 Q108 60 100 62" fill="none" stroke="#E6D8BF" stroke-width="9" stroke-linecap="round"/>
+        <ellipse cx="60" cy="92" rx="34" ry="22" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>
+        <path d="M28 38 L34 12 L52 28 Z" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M92 38 L86 12 L68 28 Z" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M33 33 L36 20 L46 29 Z" fill="#F6C6CF"/><path d="M87 33 L84 20 L74 29 Z" fill="#F6C6CF"/>
+        <circle cx="60" cy="52" r="33" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>
+        <circle cx="47" cy="50" r="4" fill="#5B4A3F"/><circle cx="73" cy="50" r="4" fill="#5B4A3F"/>
+        <circle cx="48.5" cy="48.5" r="1.3" fill="#FFFFFF"/><circle cx="74.5" cy="48.5" r="1.3" fill="#FFFFFF"/>
+        <ellipse cx="38" cy="60" rx="6" ry="4" fill="#F6C6CF"/><ellipse cx="82" cy="60" rx="6" ry="4" fill="#F6C6CF"/>
+        <path d="M54 62 Q57 66 60 62 Q63 66 66 62" fill="none" stroke="#5B4A3F" stroke-width="2" stroke-linecap="round"/>
+        <ellipse cx="46" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>
+        <ellipse cx="74" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>
+        <path d="M60 87 L48 80 L48 94 Z" fill="#F4A9BE"/><path d="M60 87 L72 80 L72 94 Z" fill="#F4A9BE"/>
+        <circle cx="60" cy="87" r="4.5" fill="#E997AE"/>
+      </svg>
+    </div>
+    <h1>📚 おうちアプリずかん</h1>
+    <div class="sub">あそびたい アプリを えらんでね</div>
+  </div>
+  <div class="bubble">きょうは どれに する？</div>
+
+  <div class="shelf"><span class="label">✏️ べんきょうの たな</span><span class="rule"></span></div>
+  <div class="cards">
+    <a class="appcard" style="--ccolor: var(--c-keisan)" href="https://ouchi-manabi-lab.github.io/keisan/">
+      <span class="icon">⚡</span>
+      <span class="txt"><span class="name">フラッシュけいさん</span><span class="desc">たしざん・ひきざんの 10もんチャレンジ</span></span>
+      <span class="go">▶</span>
+    </a>
+    <a class="appcard" style="--ccolor: var(--c-shinkei)" href="https://ouchi-manabi-lab.github.io/shinkei/">
+      <span class="icon">🐾</span>
+      <span class="txt"><span class="name">しんけいすいじゃく</span><span class="desc">カードあわせで きおくりょく アップ</span></span>
+      <span class="go">▶</span>
+    </a>
+    <a class="appcard" style="--ccolor: var(--c-tokei)" href="https://ouchi-manabi-lab.github.io/tokei/">
+      <span class="icon">🕐</span>
+      <span class="txt"><span class="name">とけいよみ</span><span class="desc">なんじなんぷん、よめるかな？</span></span>
+      <span class="go">▶</span>
+    </a>
+    <a class="appcard" style="--ccolor: var(--c-kanji)" href="https://ouchi-manabi-lab.github.io/kanji/">
+      <span class="icon">📖</span>
+      <span class="txt"><span class="name">かんじフラッシュ</span><span class="desc">1ねんせいの かんじ、よみかたクイズ</span></span>
+      <span class="go">▶</span>
+    </a>
+    <a class="appcard" style="--ccolor: var(--c-okane)" href="https://ouchi-manabi-lab.github.io/okane/">
+      <span class="icon">💰</span>
+      <span class="txt"><span class="name">おかねチャレンジ</span><span class="desc">こうかを かぞえて・つくって マスター</span></span>
+      <span class="go">▶</span>
+    </a>
+  </div>
+
+  <div class="shelf"><span class="label">🎨 あそびの たな</span><span class="rule"></span></div>
+  <div class="cards">
+    <a class="appcard" style="--ccolor: var(--c-deco)" href="https://ouchi-manabi-lab.github.io/deco/">
+      <span class="icon">🎨</span>
+      <span class="txt"><span class="name">シールちょうデコ</span><span class="desc">シールを ぺたぺた、じぶんだけの ページ</span></span>
+      <span class="go">▶</span>
+    </a>
+  </div>
+
+  <div class="shelf"><span class="label">🏠 かぞくの たな</span><span class="rule"></span></div>
+  <div class="cards">
+    <a class="appcard" style="--ccolor: var(--c-board)" href="https://ouchi-manabi-lab.github.io/board/">
+      <span class="icon">✅</span>
+      <span class="txt"><span class="name">やることボード</span><span class="desc">きょうの やることを チェック！</span></span>
+      <span class="go">▶</span>
+    </a>
+  </div>
+
+  <div class="note">
+    おうちのかたへ：このページを ホームがめんに ついかすると、アイコン1つで ぜんぶの アプリに いけます。せいせき・きろくは スマホごとに ほぞんされます。
+  </div>
+</div>

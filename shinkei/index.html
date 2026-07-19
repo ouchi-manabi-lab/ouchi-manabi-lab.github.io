@@ -1,0 +1,571 @@
+<title>しんけいすいじゃく</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<style>
+  :root {
+    --bg: #FFFDF7;
+    --bg-deco: #F8EEDA;
+    --card: #FFFFFF;
+    --ink: #5B4A3F;
+    --muted: #A08D7C;
+    --line: #EBDFC8;
+    --accent: #E08A3C;
+    --accent-ink: #FFFFFF;
+    --star: #FFCF5C;
+    --good: #5E9C56;
+    --bad: #E0798F;
+    --bubble: #FBF3E0;
+    --back: #F4DFC0;
+    --back-ink: #C99B5C;
+    --d-doubutsu: #E997AE;
+    --d-suji: #5E9C56;
+    --d-tashi: #E08A3C;
+    --shadow: 0 2px 4px rgba(181,114,47,.12), 0 6px 18px rgba(181,114,47,.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #252B23; --bg-deco: #2C332A; --card: #333C30; --ink: #F2EBDC; --muted: #A9A18C;
+      --line: #4A5340; --accent: #E89B55; --accent-ink: #2A2314; --star: #FFD97A;
+      --good: #85C07B; --bad: #E893A5; --bubble: #3A4435; --back: #4A5340; --back-ink: #C7A876;
+      --d-doubutsu: #EFA9BE; --d-suji: #85C07B; --d-tashi: #ECA36A;
+      --shadow: 0 2px 6px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #FFFDF7; --bg-deco: #F8EEDA; --card: #FFFFFF; --ink: #5B4A3F; --muted: #A08D7C;
+    --line: #EBDFC8; --accent: #E08A3C; --accent-ink: #FFFFFF; --star: #FFCF5C;
+    --good: #5E9C56; --bad: #E0798F; --bubble: #FBF3E0; --back: #F4DFC0; --back-ink: #C99B5C;
+    --d-doubutsu: #E997AE; --d-suji: #5E9C56; --d-tashi: #E08A3C;
+    --shadow: 0 2px 4px rgba(181,114,47,.12), 0 6px 18px rgba(181,114,47,.10);
+  }
+  :root[data-theme="dark"] {
+    --bg: #252B23; --bg-deco: #2C332A; --card: #333C30; --ink: #F2EBDC; --muted: #A9A18C;
+    --line: #4A5340; --accent: #E89B55; --accent-ink: #2A2314; --star: #FFD97A;
+    --good: #85C07B; --bad: #E893A5; --bubble: #3A4435; --back: #4A5340; --back-ink: #C7A876;
+    --d-doubutsu: #EFA9BE; --d-suji: #85C07B; --d-tashi: #ECA36A;
+    --shadow: 0 2px 6px rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    background-image:
+      radial-gradient(ellipse 90px 46px at 12% 60px, var(--bg-deco) 98%, transparent),
+      radial-gradient(ellipse 120px 56px at 88% 130px, var(--bg-deco) 98%, transparent),
+      radial-gradient(ellipse 80px 40px at 30% 240px, var(--bg-deco) 98%, transparent);
+    background-repeat: no-repeat;
+    font-family: "UD デジタル 教科書体 N-R", "UD Digi Kyokasho N-R",
+      "Hiragino Maru Gothic ProN", "BIZ UDGothic", "Noto Sans JP",
+      "Yu Gothic", sans-serif;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none; user-select: none;
+  }
+  .app { max-width: 480px; margin: 0 auto; padding: 14px 14px calc(14px + env(safe-area-inset-bottom)); min-height: 100%; display: flex; flex-direction: column; }
+  .screen { display: none; flex: 1; flex-direction: column; }
+  .screen.show { display: flex; }
+  button { font-family: inherit; cursor: pointer; }
+  button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  /* ---- ホーム ---- */
+  .homehead { text-align: center; margin: 8px 0 4px; }
+  .homehead h1 { font-size: 26px; margin: 0; letter-spacing: .06em; }
+  .homehead .sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .cat { width: 110px; margin: 6px auto 2px; }
+  @keyframes catbob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  .cat svg { animation: catbob 3.2s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) { .cat svg { animation: none; } }
+  .homebubble {
+    background: var(--bubble); border: 2px solid var(--line); border-radius: 16px;
+    padding: 8px 14px; font-size: 15px; text-align: center; margin: 0 auto 14px; max-width: 300px;
+  }
+  .modes { display: flex; flex-direction: column; gap: 12px; }
+  .modebtn {
+    border: none; border-radius: 20px; padding: 16px 18px;
+    background: var(--card); box-shadow: var(--shadow);
+    border-left: 10px solid var(--mcolor);
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    font-size: 20px; color: var(--ink); text-align: left;
+  }
+  .modebtn .sub2 { display: block; font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+  .modebtn .best { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+  .modebtn:active { transform: scale(.98); }
+
+  /* ---- ゲーム ---- */
+  .gametop { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+  .quit { border: 2px solid var(--line); background: var(--card); color: var(--muted); border-radius: 999px; padding: 11px 16px; font-size: 14px; }
+  .counts { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; line-height: 1.4; }
+  .counts b { color: var(--ink); }
+  .gamebubble {
+    background: var(--bubble); border: 2px solid var(--line); border-radius: 14px;
+    padding: 6px 12px; font-size: 14px; text-align: center; margin: 0 auto 10px; min-height: 20px; max-width: 320px;
+  }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 4px; }
+  .card {
+    position: relative; aspect-ratio: 3 / 4; border-radius: 18px;
+    border: 2.5px solid var(--line); background: var(--card);
+    box-shadow: var(--shadow); padding: 4px; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .card .back, .card .cface {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    border-radius: 15px;
+  }
+  .card .back { background: var(--back); color: var(--back-ink); font-size: 44px; }
+  .card .cface { display: none; flex-wrap: wrap; gap: 4px; padding: 5px; text-align: center; }
+  .card.up .back, .card.matched .back { display: none; }
+  .card.up .cface, .card.matched .cface { display: flex; }
+  .card.up { border-color: var(--accent); }
+  .card.matched { border-color: var(--good); opacity: .55; }
+  .card:active { transform: scale(.97); }
+  .card.bad { animation: shake .3s ease; border-color: var(--bad); }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  @keyframes pop { 0% { transform: scale(.7); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
+  .card.win .cface { animation: pop .3s ease; }
+  @media (prefers-reduced-motion: reduce) { .card.bad, .card.win .cface { animation: none; } }
+  .cface .emoji { font-size: 60px; line-height: 1; }
+  .cface .asvg { width: 82%; max-width: 100px; }
+  .cface .asvg svg { display: block; width: 100%; height: auto; }
+  .cface .num { font-size: 52px; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .cface .expr { font-size: 24px; font-variant-numeric: tabular-nums; color: var(--ink); letter-spacing: 0; white-space: nowrap; }
+  .cface .dots { display: grid; grid-template-columns: repeat(5, 15px); gap: 4px; justify-content: center; }
+  .cface .dots i { width: 15px; height: 15px; border-radius: 50%; background: var(--d-suji); display: block; }
+
+  /* ---- けっか ---- */
+  .result { text-align: center; margin: auto 0; }
+  .result .rstars { font-size: 34px; letter-spacing: 4px; min-height: 44px; }
+  .result h2 { font-size: 26px; margin: 10px 0 4px; }
+  .result .rtime { font-size: 16px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .bestbadge {
+    display: none; margin: 10px auto 0; width: fit-content;
+    background: var(--star); color: #5C4400; font-weight: bold;
+    border-radius: 999px; padding: 6px 18px; font-size: 16px;
+  }
+  .bestbadge.show { display: block; }
+  .rcat { width: 96px; margin: 10px auto 0; }
+  .rbubble {
+    background: var(--bubble); border: 2px solid var(--line); border-radius: 16px;
+    padding: 8px 14px; font-size: 16px; margin: 8px auto 0; max-width: 280px;
+  }
+  .rbtns { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+  .bigbtn {
+    border: none; border-radius: 999px; padding: 14px; font-size: 19px; font-weight: bold;
+    background: var(--accent); color: var(--accent-ink); box-shadow: var(--shadow);
+  }
+  .bigbtn.ghost { background: var(--card); color: var(--ink); border: 2.5px solid var(--line); font-weight: normal; }
+
+  .soundline { text-align: center; margin-top: 14px; }
+  .soundbtn { border: 2px solid var(--line); background: var(--card); color: var(--muted); border-radius: 999px; padding: 11px 18px; font-size: 13px; }
+
+  /* ---- そろったときの 全画面〇 ---- */
+  .burst {
+    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+    pointer-events: none; opacity: 0; z-index: 50;
+  }
+  .burst svg { width: 62vw; max-width: 260px; height: auto; }
+  .burst.show { animation: burst .62s ease-out; }
+  @keyframes burst {
+    0% { opacity: 0; transform: scale(.3) rotate(-8deg); }
+    35% { opacity: 1; transform: scale(1.05) rotate(2deg); }
+    70% { opacity: 1; transform: scale(1) rotate(0); }
+    100% { opacity: 0; transform: scale(1.12); }
+  }
+  @media (prefers-reduced-motion: reduce) { .burst.show { animation: none; opacity: 0; } }
+</style>
+
+<div class="app">
+
+  <!-- ホーム -->
+  <div class="screen show" id="scrHome">
+    <div class="homehead">
+      <div class="cat" aria-hidden="true" id="homeCat"></div>
+      <h1>🐾 しんけいすいじゃく</h1>
+      <div class="sub">おなじ ペアを さがして めくろう</div>
+    </div>
+    <div class="homebubble" id="homeSay">どれで あそぶ？</div>
+    <div class="modes" id="deckList">
+      <button class="modebtn" data-deck="doubutsu" style="--mcolor: var(--d-doubutsu)">
+        <span>🐰 どうぶつ<span class="sub2">おなじ どうぶつを あわせよう</span></span>
+        <span class="best" id="best-doubutsu"></span>
+      </button>
+      <button class="modebtn" data-deck="suji" style="--mcolor: var(--d-suji)">
+        <span>🔢 すうじと ドット<span class="sub2">かずと つぶの かずを あわせよう</span></span>
+        <span class="best" id="best-suji"></span>
+      </button>
+      <button class="modebtn" data-deck="tashi" style="--mcolor: var(--d-tashi)">
+        <span>➕ たしざん<span class="sub2">しきと こたえを あわせよう</span></span>
+        <span class="best" id="best-tashi"></span>
+      </button>
+    </div>
+    <div class="soundline">
+      <button class="soundbtn" id="soundBtn">🔔 おと：オン</button>
+    </div>
+  </div>
+
+  <!-- ゲーム -->
+  <div class="screen" id="scrGame">
+    <div class="gametop">
+      <button class="quit" id="quitBtn">← やめる</button>
+      <div class="counts">
+        そろった <b id="pairCount">0</b>/<span id="pairTotal">6</span><br>
+        てすう <b id="moveCount">0</b>
+      </div>
+    </div>
+    <div class="gamebubble" id="gameSay">おなじ ペアは どこかな？</div>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <!-- けっか -->
+  <div class="screen" id="scrResult">
+    <div class="result">
+      <div class="rstars" id="rstars"></div>
+      <h2 id="rmsg"></h2>
+      <div class="rtime" id="rtime"></div>
+      <div class="bestbadge" id="bestBadge">🏆 じぶんベスト こうしん！</div>
+      <div class="rcat" aria-hidden="true" id="resultCat"></div>
+      <div class="rbubble" id="rsay"></div>
+      <div class="rbtns">
+        <button class="bigbtn" id="againBtn">もういちど！</button>
+        <button class="bigbtn ghost" id="homeBtn">もどる</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="burst" id="burst" aria-hidden="true"></div>
+
+<script>
+(function () {
+  "use strict";
+  var KEY = "shinkeisuijaku-v1";
+  var PAIRS = 6;               // ペアの かず（12まい・3×4）
+  var DECKS = {
+    doubutsu: "どうぶつ", suji: "すうじと ドット", tashi: "たしざん"
+  };
+
+  /* ---- 白猫マスコット（けいさん・やることボードと同じ子） ---- */
+  var CAT_SVG = '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">' +
+    '<path d="M97 88 Q114 84 110 68 Q108 60 100 62" fill="none" stroke="#E6D8BF" stroke-width="9" stroke-linecap="round"/>' +
+    '<ellipse cx="60" cy="92" rx="34" ry="22" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+    '<path d="M28 38 L34 12 L52 28 Z" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5" stroke-linejoin="round"/>' +
+    '<path d="M92 38 L86 12 L68 28 Z" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5" stroke-linejoin="round"/>' +
+    '<path d="M33 33 L36 20 L46 29 Z" fill="#F6C6CF"/><path d="M87 33 L84 20 L74 29 Z" fill="#F6C6CF"/>' +
+    '<circle cx="60" cy="52" r="33" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+    '<circle cx="47" cy="50" r="4" fill="#5B4A3F"/><circle cx="73" cy="50" r="4" fill="#5B4A3F"/>' +
+    '<circle cx="48.5" cy="48.5" r="1.3" fill="#FFFFFF"/><circle cx="74.5" cy="48.5" r="1.3" fill="#FFFFFF"/>' +
+    '<ellipse cx="38" cy="60" rx="6" ry="4" fill="#F6C6CF"/><ellipse cx="82" cy="60" rx="6" ry="4" fill="#F6C6CF"/>' +
+    '<path d="M54 62 Q57 66 60 62 Q63 66 66 62" fill="none" stroke="#5B4A3F" stroke-width="2" stroke-linecap="round"/>' +
+    '<ellipse cx="46" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+    '<ellipse cx="74" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+    '<path d="M60 87 L48 80 L48 94 Z" fill="#F4A9BE"/><path d="M60 87 L72 80 L72 94 Z" fill="#F4A9BE"/>' +
+    '<circle cx="60" cy="87" r="4.5" fill="#E997AE"/></svg>';
+  document.getElementById("homeCat").innerHTML = CAT_SVG;
+  document.getElementById("resultCat").innerHTML = CAT_SVG;
+
+  /* ---- どうぶつカード（白猫と同じ描き文法：輪郭は淡色・目#5B4A3F・ほっぺ#F6C6CF） ---- */
+  var SVG_HEAD = '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">';
+  function eyesAt(y) {
+    return '<circle cx="48" cy="' + y + '" r="4" fill="#5B4A3F"/><circle cx="72" cy="' + y + '" r="4" fill="#5B4A3F"/>' +
+      '<circle cx="49.5" cy="' + (y - 1.5) + '" r="1.3" fill="#FFFFFF"/><circle cx="73.5" cy="' + (y - 1.5) + '" r="1.3" fill="#FFFFFF"/>';
+  }
+  var DOUBUTSU = [
+    { name: "うさぎ", svg: SVG_HEAD +
+      '<ellipse cx="46" cy="26" rx="9.5" ry="21" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5" transform="rotate(-9 46 26)"/>' +
+      '<ellipse cx="74" cy="26" rx="9.5" ry="21" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5" transform="rotate(9 74 26)"/>' +
+      '<ellipse cx="46" cy="28" rx="4.2" ry="13" fill="#F6C6CF" transform="rotate(-9 46 28)"/>' +
+      '<ellipse cx="74" cy="28" rx="4.2" ry="13" fill="#F6C6CF" transform="rotate(9 74 28)"/>' +
+      '<circle cx="60" cy="72" r="30" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+      eyesAt(68) +
+      '<ellipse cx="38" cy="78" rx="6" ry="4" fill="#F6C6CF"/><ellipse cx="82" cy="78" rx="6" ry="4" fill="#F6C6CF"/>' +
+      '<path d="M56.5 74 L63.5 74 L60 79 Z" fill="#E997AE"/>' +
+      '<path d="M60 79 L60 83 M54 85 Q57 88 60 83 Q63 88 66 85" fill="none" stroke="#5B4A3F" stroke-width="2" stroke-linecap="round"/>' +
+      '</svg>' },
+    { name: "くま", svg: SVG_HEAD +
+      '<circle cx="40" cy="44" r="10.5" fill="#F5E6C8" stroke="#DCC49B" stroke-width="2.5"/>' +
+      '<circle cx="80" cy="44" r="10.5" fill="#F5E6C8" stroke="#DCC49B" stroke-width="2.5"/>' +
+      '<circle cx="40" cy="44" r="4.5" fill="#EBD3A8"/><circle cx="80" cy="44" r="4.5" fill="#EBD3A8"/>' +
+      '<circle cx="60" cy="72" r="30" fill="#F5E6C8" stroke="#DCC49B" stroke-width="2.5"/>' +
+      eyesAt(66) +
+      '<ellipse cx="38" cy="76" rx="6" ry="4" fill="#F6C6CF"/><ellipse cx="82" cy="76" rx="6" ry="4" fill="#F6C6CF"/>' +
+      '<ellipse cx="60" cy="82" rx="11.5" ry="8.5" fill="#FBF3E0"/>' +
+      '<ellipse cx="60" cy="78" rx="4" ry="3.2" fill="#B5722F"/>' +
+      '<path d="M60 81 L60 84 M55 86 Q57.5 88.5 60 84 Q62.5 88.5 65 86" fill="none" stroke="#5B4A3F" stroke-width="2" stroke-linecap="round"/>' +
+      '</svg>' },
+    { name: "いぬ", svg: SVG_HEAD +
+      '<circle cx="60" cy="72" r="30" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+      '<ellipse cx="35" cy="60" rx="9.5" ry="17" fill="#EBD5B0" stroke="#DCC49B" stroke-width="2.5" transform="rotate(14 35 60)"/>' +
+      '<ellipse cx="85" cy="60" rx="9.5" ry="17" fill="#EBD5B0" stroke="#DCC49B" stroke-width="2.5" transform="rotate(-14 85 60)"/>' +
+      eyesAt(66) +
+      '<ellipse cx="40" cy="76" rx="5.5" ry="4" fill="#F6C6CF"/><ellipse cx="80" cy="76" rx="5.5" ry="4" fill="#F6C6CF"/>' +
+      '<ellipse cx="60" cy="76" rx="4.5" ry="3.5" fill="#5B4A3F"/>' +
+      '<path d="M60 79 L60 83 M54 85 Q57 88 60 83 Q63 88 66 85" fill="none" stroke="#5B4A3F" stroke-width="2" stroke-linecap="round"/>' +
+      '</svg>' },
+    { name: "ぱんだ", svg: SVG_HEAD +
+      '<circle cx="38" cy="46" r="11" fill="#6B5A4E"/><circle cx="82" cy="46" r="11" fill="#6B5A4E"/>' +
+      '<circle cx="60" cy="72" r="30" fill="#FFFFFF" stroke="#D9CDBB" stroke-width="2.5"/>' +
+      '<ellipse cx="47" cy="68" rx="8.5" ry="10.5" fill="#6B5A4E" transform="rotate(-14 47 68)"/>' +
+      '<ellipse cx="73" cy="68" rx="8.5" ry="10.5" fill="#6B5A4E" transform="rotate(14 73 68)"/>' +
+      '<circle cx="47.5" cy="67" r="3" fill="#FFFFFF"/><circle cx="72.5" cy="67" r="3" fill="#FFFFFF"/>' +
+      '<circle cx="48.2" cy="66.4" r="1.1" fill="#5B4A3F"/><circle cx="71.8" cy="66.4" r="1.1" fill="#5B4A3F"/>' +
+      '<ellipse cx="38" cy="80" rx="5.5" ry="4" fill="#F6C6CF"/><ellipse cx="82" cy="80" rx="5.5" ry="4" fill="#F6C6CF"/>' +
+      '<ellipse cx="60" cy="78" rx="4" ry="3" fill="#5B4A3F"/>' +
+      '<path d="M54 84 Q57 87 60 83 Q63 87 66 84" fill="none" stroke="#5B4A3F" stroke-width="2" stroke-linecap="round"/>' +
+      '</svg>' },
+    { name: "かえる", svg: SVG_HEAD +
+      '<ellipse cx="60" cy="76" rx="31" ry="27" fill="#CBE3C2" stroke="#A9CB9C" stroke-width="2.5"/>' +
+      '<circle cx="44" cy="46" r="11" fill="#CBE3C2" stroke="#A9CB9C" stroke-width="2.5"/>' +
+      '<circle cx="76" cy="46" r="11" fill="#CBE3C2" stroke="#A9CB9C" stroke-width="2.5"/>' +
+      '<circle cx="44" cy="46" r="6.5" fill="#FFFFFF"/><circle cx="76" cy="46" r="6.5" fill="#FFFFFF"/>' +
+      '<circle cx="44" cy="47" r="3.2" fill="#5B4A3F"/><circle cx="76" cy="47" r="3.2" fill="#5B4A3F"/>' +
+      '<circle cx="45" cy="45.8" r="1.1" fill="#FFFFFF"/><circle cx="77" cy="45.8" r="1.1" fill="#FFFFFF"/>' +
+      '<ellipse cx="38" cy="82" rx="6" ry="4" fill="#F6C6CF"/><ellipse cx="82" cy="82" rx="6" ry="4" fill="#F6C6CF"/>' +
+      '<circle cx="56" cy="70" r="1.6" fill="#5B4A3F"/><circle cx="64" cy="70" r="1.6" fill="#5B4A3F"/>' +
+      '<path d="M46 82 Q60 92 74 82" fill="none" stroke="#5B4A3F" stroke-width="2.5" stroke-linecap="round"/>' +
+      '</svg>' },
+    { name: "ぶた", svg: SVG_HEAD +
+      '<path d="M34 54 L38 34 L54 44 Z" fill="#F6C6CF" stroke="#E3A5B5" stroke-width="2.5" stroke-linejoin="round"/>' +
+      '<path d="M86 54 L82 34 L66 44 Z" fill="#F6C6CF" stroke="#E3A5B5" stroke-width="2.5" stroke-linejoin="round"/>' +
+      '<circle cx="60" cy="72" r="30" fill="#F6C6CF" stroke="#E3A5B5" stroke-width="2.5"/>' +
+      eyesAt(64) +
+      '<ellipse cx="36" cy="74" rx="5.5" ry="4" fill="#F4A9BE"/><ellipse cx="84" cy="74" rx="5.5" ry="4" fill="#F4A9BE"/>' +
+      '<ellipse cx="60" cy="80" rx="12" ry="9" fill="#F4A9BE" stroke="#E3A5B5" stroke-width="2"/>' +
+      '<ellipse cx="55.5" cy="80" rx="2" ry="3" fill="#C97B90"/><ellipse cx="64.5" cy="80" rx="2" ry="3" fill="#C97B90"/>' +
+      '<path d="M53 93 Q60 96.5 67 93" fill="none" stroke="#5B4A3F" stroke-width="2" stroke-linecap="round"/>' +
+      '</svg>' }
+  ];
+
+  /* ---- そろったときの 全画面〇（手描き水彩タッチ） ---- */
+  var MARU_SVG = '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">' +
+    '<path d="M100 26 C150 22 178 62 174 104 C170 150 138 178 96 176 C50 174 24 138 28 94 C31 54 58 30 100 26 Z" ' +
+    'fill="none" stroke="#8FC57F" stroke-width="20" stroke-linecap="round" opacity="0.55"/>' +
+    '<path d="M100 30 C147 27 174 63 171 103 C168 146 137 173 97 171 C54 169 29 136 33 96 C36 58 61 33 100 30 Z" ' +
+    'fill="none" stroke="#5E9C56" stroke-width="12" stroke-linecap="round"/></svg>';
+  var burstEl = document.getElementById("burst");
+  burstEl.innerHTML = MARU_SVG;
+  function flashMaru() {
+    burstEl.classList.remove("show");
+    void burstEl.offsetWidth;
+    burstEl.classList.add("show");
+  }
+
+  /* ---- 保存 ---- */
+  function loadData() {
+    try { var r = localStorage.getItem(KEY); if (r) return JSON.parse(r); } catch (e) {}
+    return { best: {}, sound: true };
+  }
+  function saveData() { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {} }
+  var data = loadData();
+  if (!data.best) data.best = {};
+  if (typeof data.sound !== "boolean") data.sound = true;
+
+  /* ---- おと（WebAudio・こわれても無視） ---- */
+  var actx = null;
+  function beep(kind) {
+    if (!data.sound) return;
+    try {
+      if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+      var t = actx.currentTime;
+      var o = actx.createOscillator(); var g = actx.createGain();
+      o.connect(g); g.connect(actx.destination);
+      g.gain.setValueAtTime(0.12, t);
+      if (kind === "ok") {
+        o.frequency.setValueAtTime(880, t); o.frequency.setValueAtTime(1320, t + 0.09);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.25); o.start(t); o.stop(t + 0.25);
+      } else if (kind === "ng") {
+        o.frequency.setValueAtTime(300, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.18); o.start(t); o.stop(t + 0.18);
+      } else if (kind === "flip") {
+        o.frequency.setValueAtTime(660, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.08); o.start(t); o.stop(t + 0.08);
+      } else {
+        o.frequency.setValueAtTime(1568, t); o.frequency.setValueAtTime(2093, t + 0.1);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.5); o.start(t); o.stop(t + 0.5);
+      }
+    } catch (e) {}
+  }
+
+  /* ---- ランダム ---- */
+  function rnd(n) { return Math.floor(Math.random() * n); }
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) { var j = rnd(i + 1); var t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a;
+  }
+  function pickN(pool, n) { return shuffle(pool.slice()).slice(0, n); }
+
+  /* ==============================================================
+     デッキ（中身）づくり
+     各デッキは PAIRS 組の「ペア」をつくる。
+     1ペア ＝ おなじ key を もつ 2まいの カード。
+     card = { key, faceType, face }
+       faceType: "emoji" | "num" | "dots" | "expr"
+     おなじ絵合わせも、しき⇔こたえも、この形で表せる。
+     ここに新しいデッキを足すだけで教材が増える（ひらがな⇔え 等）。
+     ============================================================== */
+  function buildDeck(deckId) {
+    var cards = [];
+    if (deckId === "doubutsu") {
+      var picked = pickN(DOUBUTSU, PAIRS);
+      picked.forEach(function (a, i) {
+        cards.push({ key: i, faceType: "svg", face: a.svg });
+        cards.push({ key: i, faceType: "svg", face: a.svg });
+      });
+    } else if (deckId === "suji") {
+      var nums = pickN([1,2,3,4,5,6,7,8,9,10], PAIRS);
+      nums.forEach(function (n, i) {
+        cards.push({ key: i, faceType: "num", face: String(n) });
+        cards.push({ key: i, faceType: "dots", face: n });
+      });
+    } else { // tashi：しき ⇔ こたえ（こたえは かぶらないように）
+      var usedAns = {}, made = 0, guard = 0;
+      while (made < PAIRS && guard < 300) {
+        guard++;
+        var a = 1 + rnd(9), b = 1 + rnd(9), s = a + b;
+        if (usedAns[s]) continue;
+        usedAns[s] = true;
+        cards.push({ key: made, faceType: "expr", face: a + " ＋ " + b });
+        cards.push({ key: made, faceType: "num", face: String(s) });
+        made++;
+      }
+    }
+    return shuffle(cards);
+  }
+
+  function faceHTML(card) {
+    if (card.faceType === "svg") return '<span class="asvg">' + card.face + '</span>';
+    if (card.faceType === "emoji") return '<span class="emoji">' + card.face + '</span>';
+    if (card.faceType === "num") return '<span class="num">' + card.face + '</span>';
+    if (card.faceType === "expr") return '<span class="expr">' + card.face + '</span>';
+    if (card.faceType === "dots") {
+      var d = '<span class="dots">'; for (var i = 0; i < card.face; i++) d += '<i></i>'; return d + '</span>';
+    }
+    return "";
+  }
+
+  /* ---- 画面きりかえ ---- */
+  function show(id) {
+    var scrs = document.querySelectorAll(".screen");
+    for (var i = 0; i < scrs.length; i++) scrs[i].className = "screen";
+    document.getElementById(id).className = "screen show";
+  }
+
+  /* ---- ホーム ---- */
+  function renderHome() {
+    for (var k in DECKS) {
+      var el = document.getElementById("best-" + k);
+      var b = data.best[k];
+      el.textContent = b ? "さいこう：" + b.moves + "てすう" : "";
+    }
+    document.getElementById("soundBtn").textContent = data.sound ? "🔔 おと：オン" : "🔕 おと：オフ";
+  }
+  document.getElementById("soundBtn").addEventListener("click", function () {
+    data.sound = !data.sound; saveData(); renderHome();
+  });
+
+  /* ---- ゲーム ---- */
+  var game = null;
+  document.getElementById("deckList").addEventListener("click", function (e) {
+    var b = e.target.closest(".modebtn"); if (!b) return;
+    startGame(b.getAttribute("data-deck"));
+  });
+
+  function startGame(deckId) {
+    game = { deck: deckId, cards: buildDeck(deckId), up: [], matched: 0, moves: 0, busy: false };
+    document.getElementById("pairTotal").textContent = PAIRS;
+    document.getElementById("pairCount").textContent = "0";
+    document.getElementById("moveCount").textContent = "0";
+    document.getElementById("gameSay").textContent = "おなじ ペアは どこかな？";
+    var grid = document.getElementById("grid");
+    grid.innerHTML = "";
+    game.cards.forEach(function (card, i) {
+      var btn = document.createElement("button");
+      btn.className = "card";
+      btn.setAttribute("data-i", i);
+      btn.innerHTML = '<span class="back">？</span><span class="cface">' + faceHTML(card) + '</span>';
+      grid.appendChild(btn);
+    });
+    show("scrGame");
+  }
+  document.getElementById("quitBtn").addEventListener("click", function () {
+    game = null; renderHome(); show("scrHome");
+  });
+
+  document.getElementById("grid").addEventListener("click", function (e) {
+    var b = e.target.closest(".card"); if (!b || !game || game.busy) return;
+    var i = parseInt(b.getAttribute("data-i"), 10);
+    if (b.classList.contains("up") || b.classList.contains("matched")) return;
+    if (game.up.length >= 2) return;
+    b.classList.add("up");
+    beep("flip");
+    game.up.push(i);
+    if (game.up.length === 2) {
+      game.moves++;
+      document.getElementById("moveCount").textContent = game.moves;
+      var i1 = game.up[0], i2 = game.up[1];
+      if (game.cards[i1].key === game.cards[i2].key) {
+        game.busy = true;
+        setTimeout(function () { onMatch(i1, i2); }, 420);
+      } else {
+        game.busy = true;
+        setTimeout(function () { onMiss(i1, i2); }, 950);
+      }
+    }
+  });
+
+  function cardEl(i) { return document.querySelector('.card[data-i="' + i + '"]'); }
+
+  function onMatch(i1, i2) {
+    var e1 = cardEl(i1), e2 = cardEl(i2);
+    e1.classList.remove("up"); e2.classList.remove("up");
+    e1.classList.add("matched", "win"); e2.classList.add("matched", "win");
+    beep("ok");
+    flashMaru();
+    game.matched++;
+    document.getElementById("pairCount").textContent = game.matched;
+    document.getElementById("gameSay").textContent = "そろった！ ⭐";
+    game.up = []; game.busy = false;
+    if (game.matched >= PAIRS) setTimeout(finish, 500);
+  }
+  function onMiss(i1, i2) {
+    var e1 = cardEl(i1), e2 = cardEl(i2);
+    e1.classList.add("bad"); e2.classList.add("bad");
+    beep("ng");
+    setTimeout(function () {
+      e1.classList.remove("up", "bad"); e2.classList.remove("up", "bad");
+      game.up = []; game.busy = false;
+      document.getElementById("gameSay").textContent = "おしい！ よく みて もう いちど";
+    }, 320);
+  }
+
+  /* ---- けっか ---- */
+  function finish() {
+    var moves = game.moves, deck = game.deck;
+    var perfect = moves === PAIRS;         // さいしょうてすう＝ペアの かず
+    var stars = perfect ? "⭐⭐⭐" : (moves <= PAIRS + 3 ? "⭐⭐" : "⭐");
+    document.getElementById("rstars").textContent = stars;
+    document.getElementById("rmsg").textContent = "ぜんぶ そろった！";
+    document.getElementById("rtime").textContent = DECKS[deck] + "・てすう " + moves;
+
+    var prev = data.best[deck];
+    var isBest = !prev || moves < prev.moves;
+    if (isBest) { data.best[deck] = { moves: moves }; saveData(); }
+    document.getElementById("bestBadge").className = "bestbadge" + (isBest ? " show" : "");
+
+    var say;
+    if (perfect) { say = "パーフェクト！ ぜんぶ いっぱつ！ てんさい！！"; beep("fanfare"); }
+    else if (moves <= PAIRS + 3) say = "すごい！ よく おぼえてたね！";
+    else if (moves <= PAIRS + 8) say = "よく できました！ もういっかい やってみる？";
+    else say = "ぜんぶ そろえたね！ だいじょうぶ、やるほど おぼえられるよ♪";
+    document.getElementById("rsay").textContent = say;
+
+    var last = deck;
+    document.getElementById("againBtn").onclick = function () { startGame(last); };
+    show("scrResult");
+  }
+  document.getElementById("homeBtn").addEventListener("click", function () {
+    renderHome(); show("scrHome");
+  });
+
+  renderHome();
+})();
+</script>

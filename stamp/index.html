@@ -1,0 +1,462 @@
+<title>がんばりカード</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<style>
+  :root {
+    --bg: #FFFDF7;
+    --bg-deco: #F8EEDA;
+    --card: #FFFFFF;
+    --ink: #5B4A3F;
+    --muted: #A08D7C;
+    --line: #EBDFC8;
+    --accent: #E08A3C;
+    --accent-ink: #FFFFFF;
+    --star: #FFCF5C;
+    --good: #5E9C56;
+    --bubble: #FBF3E0;
+    --today: #F6C6CF;
+    --stamp: #E08A3C;
+    --stamp2: #F9E2A9;
+    --shadow: 0 2px 4px rgba(181,114,47,.12), 0 6px 18px rgba(181,114,47,.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #252B23; --bg-deco: #2C332A; --card: #333C30; --ink: #F2EBDC; --muted: #A9A18C;
+      --line: #4A5340; --accent: #E89B55; --accent-ink: #2A2314; --star: #FFD97A;
+      --good: #85C07B; --bubble: #3A4435; --today: #6B4A52;
+      --stamp: #ECA36A; --stamp2: #6B5F3A;
+      --shadow: 0 2px 6px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #FFFDF7; --bg-deco: #F8EEDA; --card: #FFFFFF; --ink: #5B4A3F; --muted: #A08D7C;
+    --line: #EBDFC8; --accent: #E08A3C; --accent-ink: #FFFFFF; --star: #FFCF5C;
+    --good: #5E9C56; --bubble: #FBF3E0; --today: #F6C6CF;
+    --stamp: #E08A3C; --stamp2: #F9E2A9;
+    --shadow: 0 2px 4px rgba(181,114,47,.12), 0 6px 18px rgba(181,114,47,.10);
+  }
+  :root[data-theme="dark"] {
+    --bg: #252B23; --bg-deco: #2C332A; --card: #333C30; --ink: #F2EBDC; --muted: #A9A18C;
+    --line: #4A5340; --accent: #E89B55; --accent-ink: #2A2314; --star: #FFD97A;
+    --good: #85C07B; --bubble: #3A4435; --today: #6B4A52;
+    --stamp: #ECA36A; --stamp2: #6B5F3A;
+    --shadow: 0 2px 6px rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { min-height: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    background-image:
+      radial-gradient(ellipse 90px 46px at 12% 60px, var(--bg-deco) 98%, transparent),
+      radial-gradient(ellipse 120px 56px at 88% 130px, var(--bg-deco) 98%, transparent);
+    background-repeat: no-repeat;
+    font-family: "UD デジタル 教科書体 N-R", "UD Digi Kyokasho N-R",
+      "Hiragino Maru Gothic ProN", "BIZ UDGothic", "Noto Sans JP",
+      "Yu Gothic", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none; user-select: none;
+  }
+  .app { max-width: 480px; margin: 0 auto; padding: 14px 12px calc(20px + env(safe-area-inset-bottom)); }
+
+  .head { text-align: center; margin: 4px 0 2px; }
+  .head h1 { font-size: 25px; margin: 0; letter-spacing: .06em; }
+  .cat { width: 92px; margin: 2px auto 0; }
+  @keyframes catbob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  .cat svg { animation: catbob 3.2s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) { .cat svg { animation: none; } }
+  .bubble {
+    background: var(--bubble); border: 2px solid var(--line); border-radius: 16px;
+    padding: 9px 14px; font-size: 16px; text-align: center; margin: 8px auto 12px; max-width: 330px;
+    line-height: 1.5;
+  }
+
+  /* ---- おすボタン ---- */
+  .pushbtn {
+    display: block; width: 100%; border: none; border-radius: 22px;
+    padding: 20px 14px; font-size: 24px; font-weight: bold;
+    background: var(--accent); color: var(--accent-ink); box-shadow: var(--shadow);
+    font-family: inherit; cursor: pointer;
+  }
+  .pushbtn:active { transform: scale(.98); }
+  .pushbtn.done { background: var(--card); color: var(--muted); border: 3px solid var(--good); font-size: 20px; }
+  @keyframes stamppop { 0% { transform: scale(.2) rotate(-25deg); opacity: 0; } 60% { transform: scale(1.25) rotate(6deg); opacity: 1; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+
+  /* ---- タグ ---- */
+  .tagwrap { margin-top: 10px; display: none; }
+  .tagwrap.show { display: block; }
+  .taghint { font-size: 13px; color: var(--muted); text-align: center; margin-bottom: 6px; }
+  .tags { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+  .tagbtn {
+    border: 2.5px solid var(--line); background: var(--card); color: var(--ink);
+    border-radius: 15px; padding: 9px 2px; font-size: 12.5px; font-family: inherit; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 3px; line-height: 1.2;
+  }
+  .tagbtn .ti { font-size: 22px; }
+  .tagbtn.on { background: var(--stamp2); border-color: var(--accent); font-weight: bold; }
+  .tagbtn:active { transform: scale(.97); }
+
+  /* ---- れんぞく ---- */
+  .streaks { display: flex; gap: 10px; margin: 14px 0 10px; }
+  .stbox {
+    flex: 1; background: var(--card); border: 2.5px solid var(--line); border-radius: 18px;
+    padding: 10px 6px; text-align: center; box-shadow: var(--shadow);
+  }
+  .stbox .n { font-size: 27px; font-weight: bold; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .stbox .l { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+  /* ---- カレンダー ---- */
+  .calhead { display: flex; align-items: center; justify-content: space-between; margin: 6px 0 8px; }
+  .navbtn {
+    border: 2px solid var(--line); background: var(--card); color: var(--ink);
+    border-radius: 999px; width: 46px; height: 44px; font-size: 18px; font-family: inherit; cursor: pointer;
+  }
+  .navbtn:disabled { opacity: .3; }
+  .calhead .mon { font-size: 20px; font-weight: bold; }
+  .calhead .cnt { font-size: 12.5px; color: var(--muted); }
+  .cal {
+    background: var(--card); border: 2.5px solid var(--line); border-radius: 20px;
+    padding: 8px 6px; box-shadow: var(--shadow);
+  }
+  .wk { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 4px; }
+  .wk div { text-align: center; font-size: 11.5px; color: var(--muted); }
+  .wk div.sun { color: var(--stamp); }
+  .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+  .cell {
+    position: relative; aspect-ratio: 1 / 1; border-radius: 12px;
+    border: 2px solid transparent; background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    font-family: inherit; cursor: default; padding: 0; overflow: hidden;
+  }
+  .cell.day { background: var(--bg-deco); cursor: pointer; }
+  .cell.future { opacity: .35; cursor: default; }
+  .cell.today { border-color: var(--today); border-width: 3px; }
+  .cell .dnum { position: absolute; top: 2px; left: 4px; font-size: 10.5px; color: var(--muted); }
+  .cell.stamped .dnum { color: var(--ink); opacity: .55; }
+  .cell svg { width: 86%; height: 86%; }
+  .cell.pop svg { animation: stamppop .45s ease-out; }
+  @media (prefers-reduced-motion: reduce) { .cell.pop svg { animation: none; } }
+
+  /* ---- おうちのかた ---- */
+  .parent { margin-top: 16px; }
+  .parent summary {
+    font-size: 13px; color: var(--muted); cursor: pointer; padding: 8px 4px;
+    list-style: none;
+  }
+  .parent summary::-webkit-details-marker { display: none; }
+  .parent .pbody {
+    background: var(--bg-deco); border-radius: 14px; padding: 12px 14px;
+    font-size: 13px; color: var(--ink); line-height: 1.9;
+  }
+  .parent .pbody .row { display: flex; justify-content: space-between; gap: 10px; }
+  .parent .pbody .row b { font-variant-numeric: tabular-nums; }
+  .parent .pnote { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.7; }
+
+  .soundline { text-align: center; margin-top: 12px; }
+  .soundbtn { border: 2px solid var(--line); background: var(--card); color: var(--muted); border-radius: 999px; padding: 11px 18px; font-size: 13px; font-family: inherit; cursor: pointer; }
+
+  .fly { position: fixed; left: 50%; top: 38%; font-size: 76px; pointer-events: none; z-index: 9; animation: flyup 1s ease forwards; }
+  @keyframes flyup { 0% { opacity: 1; transform: translate(-50%,0) scale(.6); } 100% { opacity: 0; transform: translate(-50%,-90px) scale(1.7); } }
+  @media (prefers-reduced-motion: reduce) { .fly { display: none; } }
+</style>
+
+<div class="app">
+  <div class="head">
+    <div class="cat" aria-hidden="true" id="cat"></div>
+    <h1>🌸 がんばりカード</h1>
+  </div>
+  <div class="bubble" id="say">ボタンを おして スタンプを あつめよう！</div>
+
+  <button class="pushbtn" id="pushBtn">きょう できた！</button>
+
+  <div class="tagwrap" id="tagWrap">
+    <div class="taghint">なにを やった？（えらばなくても いいよ）</div>
+    <div class="tags" id="tags">
+      <button class="tagbtn" data-tag="print"><span class="ti">📄</span>プリント</button>
+      <button class="tagbtn" data-tag="app"><span class="ti">⚡</span>アプリ</button>
+      <button class="tagbtn" data-tag="read"><span class="ti">📖</span>おんどく</button>
+      <button class="tagbtn" data-tag="drill"><span class="ti">✏️</span>ドリル</button>
+    </div>
+  </div>
+
+  <div class="streaks">
+    <div class="stbox"><div class="n" id="stNow">0</div><div class="l">れんぞく にっすう</div></div>
+    <div class="stbox"><div class="n" id="stBest">0</div><div class="l">さいこう きろく</div></div>
+    <div class="stbox"><div class="n" id="stTotal">0</div><div class="l">ぜんぶで</div></div>
+  </div>
+
+  <div class="calhead">
+    <button class="navbtn" id="prevBtn" aria-label="まえの つき">◀</button>
+    <div style="text-align:center">
+      <div class="mon" id="monLabel">7がつ</div>
+      <div class="cnt" id="monCount">スタンプ 0こ</div>
+    </div>
+    <button class="navbtn" id="nextBtn" aria-label="つぎの つき">▶</button>
+  </div>
+  <div class="cal">
+    <div class="wk">
+      <div class="sun">にち</div><div>げつ</div><div>か</div><div>すい</div><div>もく</div><div>きん</div><div>ど</div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <details class="parent">
+    <summary>▸ おうちのかたへ（きろくの うちわけ）</summary>
+    <div class="pbody" id="pbody"></div>
+  </details>
+
+  <div class="soundline">
+    <button class="soundbtn" id="soundBtn">🔔 おと：オン</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var KEY = "ganbari-card-v1";
+  var TAGS = { print: "プリント", app: "アプリ", read: "おんどく", drill: "ドリル" };
+
+  /* ---- 白猫マスコット（ほかのアプリと同じ子・胸は🌸） ---- */
+  var CAT_SVG = '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">' +
+    '<path d="M97 88 Q114 84 110 68 Q108 60 100 62" fill="none" stroke="#E6D8BF" stroke-width="9" stroke-linecap="round"/>' +
+    '<ellipse cx="60" cy="92" rx="34" ry="22" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+    '<path d="M28 38 L34 12 L52 28 Z" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5" stroke-linejoin="round"/>' +
+    '<path d="M92 38 L86 12 L68 28 Z" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5" stroke-linejoin="round"/>' +
+    '<path d="M33 33 L36 20 L46 29 Z" fill="#F6C6CF"/><path d="M87 33 L84 20 L74 29 Z" fill="#F6C6CF"/>' +
+    '<circle cx="60" cy="52" r="33" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+    '<circle cx="47" cy="50" r="4" fill="#5B4A3F"/><circle cx="73" cy="50" r="4" fill="#5B4A3F"/>' +
+    '<circle cx="48.5" cy="48.5" r="1.3" fill="#FFFFFF"/><circle cx="74.5" cy="48.5" r="1.3" fill="#FFFFFF"/>' +
+    '<ellipse cx="38" cy="60" rx="6" ry="4" fill="#F6C6CF"/><ellipse cx="82" cy="60" rx="6" ry="4" fill="#F6C6CF"/>' +
+    '<path d="M54 62 Q57 66 60 62 Q63 66 66 62" fill="none" stroke="#5B4A3F" stroke-width="2" stroke-linecap="round"/>' +
+    '<ellipse cx="46" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+    '<ellipse cx="74" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+    '<g transform="translate(60,87)">' +
+    '<circle cx="0" cy="-7" r="4.6" fill="#F4A9BE"/><circle cx="6.7" cy="-2.2" r="4.6" fill="#F4A9BE"/>' +
+    '<circle cx="4.1" cy="5.7" r="4.6" fill="#F4A9BE"/><circle cx="-4.1" cy="5.7" r="4.6" fill="#F4A9BE"/>' +
+    '<circle cx="-6.7" cy="-2.2" r="4.6" fill="#F4A9BE"/><circle cx="0" cy="0" r="3.4" fill="#FFCF5C"/></g>' +
+    '</svg>';
+  document.getElementById("cat").innerHTML = CAT_SVG;
+
+  /* ---- はなまるスタンプ（日ごとに少し傾けて手押し風に） ---- */
+  function stampSVG(seed) {
+    var rot = ((seed * 37) % 21) - 10;
+    var s = '<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">';
+    s += '<g transform="rotate(' + rot + ' 30 30)">';
+    var pts = [[30, 12], [45, 21], [45, 39], [30, 48], [15, 39], [15, 21]];
+    pts.forEach(function (p) {
+      s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="10.5" fill="var(--stamp2)"/>';
+    });
+    s += '<circle cx="30" cy="30" r="13" fill="var(--stamp2)"/>';
+    pts.forEach(function (p) {
+      s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="10.5" fill="none" stroke="var(--stamp)" stroke-width="2.4"/>';
+    });
+    s += '<path d="M23 30 Q27 37 30 30 Q33 37 37 30" fill="none" stroke="var(--stamp)" stroke-width="2.6" stroke-linecap="round"/>';
+    s += '<circle cx="30" cy="30" r="4.5" fill="var(--star)"/>';
+    s += '</g></svg>';
+    return s;
+  }
+
+  /* ---- 保存 ---- */
+  function loadData() {
+    try { var r = localStorage.getItem(KEY); if (r) return JSON.parse(r); } catch (e) {}
+    return { days: {}, sound: true };
+  }
+  function saveData() { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {} }
+  var data = loadData();
+  if (!data.days) data.days = {};
+
+  /* ---- おと ---- */
+  var actx = null;
+  function beep(kind) {
+    if (!data.sound) return;
+    try {
+      if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+      var t = actx.currentTime;
+      var o = actx.createOscillator(); var g = actx.createGain();
+      o.connect(g); g.connect(actx.destination);
+      g.gain.setValueAtTime(0.12, t);
+      if (kind === "fanfare") {
+        o.frequency.setValueAtTime(1046, t); o.frequency.setValueAtTime(1568, t + 0.1);
+        o.frequency.setValueAtTime(2093, t + 0.2);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.6); o.start(t); o.stop(t + 0.6);
+      } else {
+        o.frequency.setValueAtTime(880, t); o.frequency.setValueAtTime(1320, t + 0.09);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.25); o.start(t); o.stop(t + 0.25);
+      }
+    } catch (e) {}
+  }
+
+  /* ---- ひづけ ---- */
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+  function dstr(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+  function today() { return dstr(new Date()); }
+
+  function streakNow() {
+    var d = new Date();
+    if (!data.days[dstr(d)]) d.setDate(d.getDate() - 1);
+    var n = 0;
+    while (data.days[dstr(d)]) { n++; d.setDate(d.getDate() - 1); }
+    return n;
+  }
+  function streakBest() {
+    var keys = Object.keys(data.days).sort();
+    var best = 0, run = 0, prev = null;
+    keys.forEach(function (k) {
+      if (prev) {
+        var pd = new Date(prev + "T00:00:00");
+        pd.setDate(pd.getDate() + 1);
+        run = (dstr(pd) === k) ? run + 1 : 1;
+      } else { run = 1; }
+      if (run > best) best = run;
+      prev = k;
+    });
+    return best;
+  }
+
+  /* ---- カレンダー ---- */
+  var now = new Date();
+  var viewY = now.getFullYear(), viewM = now.getMonth();
+
+  function renderCal() {
+    var first = new Date(viewY, viewM, 1);
+    var days = new Date(viewY, viewM + 1, 0).getDate();
+    var lead = first.getDay();
+    var grid = document.getElementById("grid");
+    var html = "";
+    var cnt = 0;
+    for (var i = 0; i < lead; i++) html += '<div class="cell"></div>';
+    for (var d = 1; d <= days; d++) {
+      var key = viewY + "-" + pad(viewM + 1) + "-" + pad(d);
+      var isFuture = key > today();
+      var on = !!data.days[key];
+      if (on) cnt++;
+      html += '<button class="cell day' + (on ? " stamped" : "") + (isFuture ? " future" : "") +
+        (key === today() ? " today" : "") + '" data-key="' + key + '"' + (isFuture ? " disabled" : "") + '>' +
+        '<span class="dnum">' + d + '</span>' + (on ? stampSVG(d) : "") + '</button>';
+    }
+    grid.innerHTML = html;
+    document.getElementById("monLabel").textContent =
+      (viewY === now.getFullYear() ? "" : viewY + "ねん ") + (viewM + 1) + "がつ";
+    document.getElementById("monCount").textContent = "スタンプ " + cnt + "こ";
+    var nb = document.getElementById("nextBtn");
+    nb.disabled = (viewY > now.getFullYear()) ||
+      (viewY === now.getFullYear() && viewM >= now.getMonth());
+    renderParent(cnt);
+  }
+
+  function renderParent(cnt) {
+    var counts = { print: 0, app: 0, read: 0, drill: 0 }, tagged = 0;
+    Object.keys(data.days).forEach(function (k) {
+      if (k.indexOf(viewY + "-" + pad(viewM + 1)) !== 0) return;
+      var t = data.days[k].tags || [];
+      if (t.length) tagged++;
+      t.forEach(function (x) { if (counts[x] !== undefined) counts[x]++; });
+    });
+    var h = '<div class="row"><span>' + (viewM + 1) + 'がつの スタンプ</span><b>' + cnt + ' にち</b></div>';
+    Object.keys(TAGS).forEach(function (k) {
+      h += '<div class="row"><span>　' + TAGS[k] + '</span><b>' + counts[k] + ' にち</b></div>';
+    });
+    h += '<div class="pnote">「なにを やった？」は えらばなくても スタンプは つきます（' +
+      tagged + '/' + cnt + 'にち えらばれています）。<br>' +
+      'カレンダーの ひづけを タップすると、あとから スタンプを つけたり けしたり できます。' +
+      'きろくは この たんまつの なかだけに ほぞんされます。</div>';
+    document.getElementById("pbody").innerHTML = h;
+  }
+
+  /* ---- 見た目の更新 ---- */
+  function renderAll() {
+    var st = streakNow();
+    document.getElementById("stNow").textContent = st;
+    document.getElementById("stBest").textContent = streakBest();
+    document.getElementById("stTotal").textContent = Object.keys(data.days).length;
+
+    var done = !!data.days[today()];
+    var btn = document.getElementById("pushBtn");
+    btn.className = "pushbtn" + (done ? " done" : "");
+    btn.textContent = done ? "🌸 きょうは おしたよ！" : "きょう できた！";
+    document.getElementById("tagWrap").className = "tagwrap" + (done ? " show" : "");
+    if (done) {
+      var tags = data.days[today()].tags || [];
+      document.querySelectorAll(".tagbtn").forEach(function (b) {
+        b.className = "tagbtn" + (tags.indexOf(b.getAttribute("data-tag")) >= 0 ? " on" : "");
+      });
+    }
+
+    var say = document.getElementById("say");
+    if (!done) {
+      say.textContent = st > 0
+        ? "きのうまで " + st + "にち れんぞく！ きょうも いこう♪"
+        : (Object.keys(data.days).length ? "きょうの ぶんを おそう！" : "ボタンを おして スタンプを あつめよう！");
+    } else if (st >= 30) say.textContent = "30にち いじょう！ もう たつじんだね！！";
+    else if (st === 7) say.textContent = "1しゅうかん れんぞく！ すごすぎる！！";
+    else if (st >= 10) say.textContent = st + "にち れんぞく！ ほんとうに えらい！！";
+    else if (st >= 3) say.textContent = st + "にち れんぞく！ その ちょうし♪";
+    else say.textContent = "やったね！ きょうも えらかったね🌸";
+
+    document.getElementById("soundBtn").textContent = data.sound ? "🔔 おと：オン" : "🔕 おと：オフ";
+    renderCal();
+  }
+
+  /* ---- スタンプを おす ---- */
+  function fly(txt) {
+    var s = document.createElement("div");
+    s.className = "fly"; s.textContent = txt;
+    document.body.appendChild(s);
+    setTimeout(function () { s.remove(); }, 1000);
+  }
+  document.getElementById("pushBtn").addEventListener("click", function () {
+    var k = today();
+    if (data.days[k]) { beep("ok"); return; }
+    data.days[k] = { tags: [] };
+    saveData();
+    renderAll();
+    var cell = document.querySelector('.cell[data-key="' + k + '"]');
+    if (cell) cell.classList.add("pop");
+    var st = streakNow();
+    fly(st > 0 && st % 7 === 0 ? "🎉" : "🌸");
+    beep(st > 0 && st % 7 === 0 ? "fanfare" : "ok");
+  });
+
+  document.getElementById("tags").addEventListener("click", function (e) {
+    var b = e.target.closest(".tagbtn"); if (!b) return;
+    var k = today(); if (!data.days[k]) return;
+    var tag = b.getAttribute("data-tag");
+    var tags = data.days[k].tags || [];
+    var i = tags.indexOf(tag);
+    if (i >= 0) tags.splice(i, 1); else tags.push(tag);
+    data.days[k].tags = tags;
+    saveData();
+    b.className = "tagbtn" + (tags.indexOf(tag) >= 0 ? " on" : "");
+    renderCal();
+    beep("ok");
+  });
+
+  /* ---- カレンダーのタップ（あとから つける・けす） ---- */
+  document.getElementById("grid").addEventListener("click", function (e) {
+    var c = e.target.closest(".cell.day"); if (!c || c.disabled) return;
+    var k = c.getAttribute("data-key");
+    if (data.days[k]) {
+      if (!confirm(k.slice(5).replace("-", "/") + " の スタンプを けしますか？")) return;
+      delete data.days[k];
+    } else {
+      data.days[k] = { tags: [] };
+      beep("ok");
+    }
+    saveData();
+    renderAll();
+  });
+
+  document.getElementById("prevBtn").addEventListener("click", function () {
+    viewM--; if (viewM < 0) { viewM = 11; viewY--; }
+    renderCal();
+  });
+  document.getElementById("nextBtn").addEventListener("click", function () {
+    viewM++; if (viewM > 11) { viewM = 0; viewY++; }
+    renderCal();
+  });
+  document.getElementById("soundBtn").addEventListener("click", function () {
+    data.sound = !data.sound; saveData(); renderAll();
+  });
+
+  renderAll();
+})();
+</script>

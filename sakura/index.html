@@ -1,0 +1,550 @@
+<title>さくらんぼ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<style>
+  :root {
+    --bg: #FFFDF7;
+    --bg-deco: #F8EEDA;
+    --card: #FFFFFF;
+    --ink: #5B4A3F;
+    --muted: #A08D7C;
+    --line: #EBDFC8;
+    --accent: #E08A3C;
+    --accent-ink: #FFFFFF;
+    --star: #FFCF5C;
+    --good: #5E9C56;
+    --bad: #E0798F;
+    --bubble: #FBF3E0;
+    --lock: #C9BCA9;
+    --lock-ink: #6E5A45;
+    --cherry: #E0798F;
+    --cherry-soft: #F6C6CF;
+    --leaf: #5E9C56;
+    --m-ten: #E0798F;
+    --m-wake: #A794CE;
+    --m-sakura: #E997AE;
+    --m-maze: #E08A3C;
+    --shadow: 0 2px 4px rgba(181,114,47,.12), 0 6px 18px rgba(181,114,47,.10);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #252B23; --bg-deco: #2C332A; --card: #333C30; --ink: #F2EBDC; --muted: #A9A18C;
+      --line: #4A5340; --accent: #E89B55; --accent-ink: #2A2314; --star: #FFD97A;
+      --good: #85C07B; --bad: #E893A5; --bubble: #3A4435; --lock: #6B7261; --lock-ink: #C7BCA6;
+      --cherry: #E893A5; --cherry-soft: #6B4A52; --leaf: #85C07B;
+      --m-ten: #E893A5; --m-wake: #BCA9E0; --m-sakura: #EFA9BE; --m-maze: #ECA36A;
+      --shadow: 0 2px 6px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #FFFDF7; --bg-deco: #F8EEDA; --card: #FFFFFF; --ink: #5B4A3F; --muted: #A08D7C;
+    --line: #EBDFC8; --accent: #E08A3C; --accent-ink: #FFFFFF; --star: #FFCF5C;
+    --good: #5E9C56; --bad: #E0798F; --bubble: #FBF3E0; --lock: #C9BCA9; --lock-ink: #6E5A45;
+    --cherry: #E0798F; --cherry-soft: #F6C6CF; --leaf: #5E9C56;
+    --m-ten: #E0798F; --m-wake: #A794CE; --m-sakura: #E997AE; --m-maze: #E08A3C;
+    --shadow: 0 2px 4px rgba(181,114,47,.12), 0 6px 18px rgba(181,114,47,.10);
+  }
+  :root[data-theme="dark"] {
+    --bg: #252B23; --bg-deco: #2C332A; --card: #333C30; --ink: #F2EBDC; --muted: #A9A18C;
+    --line: #4A5340; --accent: #E89B55; --accent-ink: #2A2314; --star: #FFD97A;
+    --good: #85C07B; --bad: #E893A5; --bubble: #3A4435; --lock: #6B7261; --lock-ink: #C7BCA6;
+    --cherry: #E893A5; --cherry-soft: #6B4A52; --leaf: #85C07B;
+    --m-ten: #E893A5; --m-wake: #BCA9E0; --m-sakura: #EFA9BE; --m-maze: #ECA36A;
+    --shadow: 0 2px 6px rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    background-image:
+      radial-gradient(ellipse 90px 46px at 12% 60px, var(--bg-deco) 98%, transparent),
+      radial-gradient(ellipse 120px 56px at 88% 130px, var(--bg-deco) 98%, transparent),
+      radial-gradient(ellipse 80px 40px at 30% 240px, var(--bg-deco) 98%, transparent);
+    background-repeat: no-repeat;
+    font-family: "UD デジタル 教科書体 N-R", "UD Digi Kyokasho N-R",
+      "Hiragino Maru Gothic ProN", "BIZ UDGothic", "Noto Sans JP",
+      "Yu Gothic", sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none; user-select: none;
+  }
+  .app { max-width: 480px; margin: 0 auto; padding: 14px 14px calc(14px + env(safe-area-inset-bottom)); min-height: 100%; display: flex; flex-direction: column; }
+  .screen { display: none; flex: 1; flex-direction: column; }
+  .screen.show { display: flex; }
+  button { font-family: inherit; cursor: pointer; }
+  button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+  /* ---- ホーム ---- */
+  .homehead { text-align: center; margin: 8px 0 4px; }
+  .homehead h1 { font-size: 26px; margin: 0; letter-spacing: .06em; }
+  .homehead .sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .cat { width: 110px; margin: 6px auto 2px; }
+  @keyframes catbob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  .cat svg { animation: catbob 3.2s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) { .cat svg { animation: none; } }
+  .homebubble {
+    background: var(--bubble); border: 2px solid var(--line); border-radius: 16px;
+    padding: 8px 14px; font-size: 15px; text-align: center; margin: 0 auto 14px; max-width: 300px;
+  }
+  .modes { display: flex; flex-direction: column; gap: 12px; }
+  .modebtn {
+    border: none; border-radius: 20px; padding: 16px 18px;
+    background: var(--card); box-shadow: var(--shadow);
+    border-left: 10px solid var(--mcolor);
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    font-size: 20px; color: var(--ink); text-align: left;
+  }
+  .modebtn .best { font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+  .modebtn:active { transform: scale(.98); }
+  .modebtn.locked { flex-wrap: wrap; border-left-color: var(--lock); box-shadow: none; background: var(--bg-deco); color: var(--lock-ink); }
+  .modebtn.locked .best { flex: 1 1 100%; white-space: normal; line-height: 1.5; font-size: 14px; color: var(--lock-ink); }
+  .modebtn.deny { animation: shake .3s ease; }
+  @media (prefers-reduced-motion: reduce) { .modebtn.deny { animation: none; } }
+
+  /* ---- ゲーム ---- */
+  .gametop { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+  .quit { border: 2px solid var(--line); background: var(--card); color: var(--muted); border-radius: 999px; padding: 11px 16px; font-size: 14px; }
+  .prog { font-size: 15px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .gamestars { font-size: 15px; letter-spacing: 1px; min-height: 20px; text-align: center; }
+  .qcard {
+    background: var(--card); border: 2.5px solid var(--line); border-radius: 24px;
+    box-shadow: var(--shadow); padding: 14px 14px 12px; text-align: center; margin: 6px 0 12px;
+    min-height: 128px; display: flex; flex-direction: column; justify-content: center; gap: 4px;
+    position: relative; overflow: hidden;
+  }
+  @keyframes qpop { 0% { transform: scale(.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+  .qcard.pop .qbody { animation: qpop .22s ease-out; }
+  @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+  .qcard.wrong { animation: shake .3s ease; border-color: var(--bad); }
+  .qcard.right { border-color: var(--good); }
+  @media (prefers-reduced-motion: reduce) { .qcard.pop .qbody, .qcard.wrong { animation: none; } }
+  .qtext { font-size: 21px; line-height: 1.3; }
+  .qtext.big { font-size: 40px; font-variant-numeric: tabular-nums; letter-spacing: 2px; }
+  .qfig { width: 270px; max-width: 92%; margin: 0 auto; }
+  .qfig.mini { width: 195px; }
+  .qfig svg { display: block; width: 100%; height: auto; }
+  .ansline { font-size: 38px; min-height: 50px; font-variant-numeric: tabular-nums; }
+  .ansline .cursor { color: var(--muted); }
+  .feedback { font-size: 17px; min-height: 24px; font-weight: bold; }
+  .feedback.ok { color: var(--good); }
+  .feedback.ng { color: var(--bad); }
+
+  .pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: auto; }
+  .key {
+    border: 2.5px solid var(--line); background: var(--card); color: var(--ink);
+    border-radius: 18px; font-size: 30px; padding: 14px 0; box-shadow: var(--shadow);
+    font-variant-numeric: tabular-nums;
+  }
+  .key:active { transform: scale(.96); background: var(--bg); }
+  .key.ok { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-size: 24px; }
+  .key.del { font-size: 24px; color: var(--muted); }
+
+  /* ---- けっか ---- */
+  .result { text-align: center; margin: auto 0; }
+  .result .rstars { font-size: 34px; letter-spacing: 4px; min-height: 44px; }
+  .result h2 { font-size: 28px; margin: 10px 0 4px; }
+  .result .rtime { font-size: 17px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .bestbadge {
+    display: none; margin: 10px auto 0; width: fit-content;
+    background: var(--star); color: #5C4400; font-weight: bold;
+    border-radius: 999px; padding: 6px 18px; font-size: 16px;
+  }
+  .bestbadge.show { display: block; }
+  .unlockbadge {
+    display: none; margin: 10px auto 0; width: fit-content;
+    background: var(--good); color: #FFFFFF; font-weight: bold;
+    border-radius: 999px; padding: 6px 18px; font-size: 16px;
+  }
+  .unlockbadge.show { display: block; }
+  .rcat { width: 96px; margin: 10px auto 0; }
+  .rbubble {
+    background: var(--bubble); border: 2px solid var(--line); border-radius: 16px;
+    padding: 8px 14px; font-size: 16px; margin: 8px auto 0; max-width: 280px;
+  }
+  .rbtns { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+  .bigbtn {
+    border: none; border-radius: 999px; padding: 14px; font-size: 19px; font-weight: bold;
+    background: var(--accent); color: var(--accent-ink); box-shadow: var(--shadow);
+  }
+  .bigbtn.ghost { background: var(--card); color: var(--ink); border: 2.5px solid var(--line); font-weight: normal; }
+
+  .soundline { text-align: center; margin-top: 14px; }
+  .soundbtn { border: 2px solid var(--line); background: var(--card); color: var(--muted); border-radius: 999px; padding: 11px 18px; font-size: 13px; }
+
+  .flystar { position: absolute; font-size: 52px; pointer-events: none; animation: fly .8s ease forwards; left: 50%; top: 30%; }
+  @keyframes fly { 0% { opacity: 1; transform: translate(-50%,0) scale(.8); } 100% { opacity: 0; transform: translate(-50%,-60px) scale(1.6); } }
+  @media (prefers-reduced-motion: reduce) { .flystar { animation: none; opacity: 0; } }
+</style>
+
+<div class="app">
+
+  <!-- ホーム -->
+  <div class="screen show" id="scrHome">
+    <div class="homehead">
+      <div class="cat" aria-hidden="true" id="homeCat"></div>
+      <h1>🍒 さくらんぼ</h1>
+      <div class="sub">10もん チャレンジ！ 10の おともだちを みつけよう</div>
+    </div>
+    <div class="homebubble" id="homeSay">どれから やる？</div>
+    <div class="modes">
+      <button class="modebtn" data-mode="ten" style="--mcolor: var(--m-ten)">10を つくろう <span class="best" id="best-ten"></span></button>
+      <button class="modebtn" data-mode="wake" style="--mcolor: var(--m-wake)">わけよう <span class="best" id="best-wake"></span></button>
+      <button class="modebtn" data-mode="sakura" style="--mcolor: var(--m-sakura)">さくらんぼ たしざん <span class="best" id="best-sakura"></span></button>
+      <button class="modebtn" data-mode="maze" style="--mcolor: var(--m-maze)">まぜこぜ <span class="best" id="best-maze"></span></button>
+    </div>
+    <div class="soundline">
+      <button class="soundbtn" id="soundBtn">🔔 おと：オン</button>
+    </div>
+  </div>
+
+  <!-- ゲーム -->
+  <div class="screen" id="scrGame">
+    <div class="gametop">
+      <button class="quit" id="quitBtn">← やめる</button>
+      <div class="prog" id="prog">1 / 10</div>
+    </div>
+    <div class="gamestars" id="gameStars"></div>
+    <div class="qcard" id="qcard">
+      <div class="qbody" id="qbody">
+        <div class="qtext" id="qtext"></div>
+        <div class="qfig" id="qfig" aria-hidden="true"></div>
+      </div>
+      <div class="ansline" id="ansline"><span class="cursor">＿</span></div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+    <div class="pad">
+      <button class="key" data-k="7">7</button>
+      <button class="key" data-k="8">8</button>
+      <button class="key" data-k="9">9</button>
+      <button class="key" data-k="4">4</button>
+      <button class="key" data-k="5">5</button>
+      <button class="key" data-k="6">6</button>
+      <button class="key" data-k="1">1</button>
+      <button class="key" data-k="2">2</button>
+      <button class="key" data-k="3">3</button>
+      <button class="key del" data-k="del">⌫</button>
+      <button class="key" data-k="0">0</button>
+      <button class="key ok" data-k="ok">けってい</button>
+    </div>
+  </div>
+
+  <!-- けっか -->
+  <div class="screen" id="scrResult">
+    <div class="result">
+      <div class="rstars" id="rstars"></div>
+      <h2 id="rmsg"></h2>
+      <div class="rtime" id="rtime"></div>
+      <div class="bestbadge" id="bestBadge">🏆 じぶんベスト こうしん！</div>
+      <div class="unlockbadge" id="unlockBadge"></div>
+      <div class="rcat" aria-hidden="true" id="resultCat"></div>
+      <div class="rbubble" id="rsay"></div>
+      <div class="rbtns">
+        <button class="bigbtn" id="againBtn">もういちど！</button>
+        <button class="bigbtn ghost" id="homeBtn">もどる</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var KEY = "sakuranbo-v1";
+  var MODES = {
+    ten: "10を つくろう", wake: "わけよう", sakura: "さくらんぼ たしざん", maze: "まぜこぜ"
+  };
+  var N_Q = 10;
+
+  /* ---- 難易度ロック：パーフェクトで次のモードが開く ---- */
+  var ALWAYS_OPEN = { ten: true, wake: true };
+  var UNLOCK_NEXT = { ten: "sakura", sakura: "maze" };
+  var LOCK_HINT = { sakura: "10を つくろう", maze: "さくらんぼ たしざん" };
+  function isOpen(mode) { return !!(ALWAYS_OPEN[mode] || data.unlocked[mode]); }
+
+  /* ---- 白猫マスコット（けいさん・やることボードと同じ子） ---- */
+  var CAT_SVG = '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">' +
+    '<path d="M97 88 Q114 84 110 68 Q108 60 100 62" fill="none" stroke="#E6D8BF" stroke-width="9" stroke-linecap="round"/>' +
+    '<ellipse cx="60" cy="92" rx="34" ry="22" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+    '<path d="M28 38 L34 12 L52 28 Z" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5" stroke-linejoin="round"/>' +
+    '<path d="M92 38 L86 12 L68 28 Z" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5" stroke-linejoin="round"/>' +
+    '<path d="M33 33 L36 20 L46 29 Z" fill="#F6C6CF"/><path d="M87 33 L84 20 L74 29 Z" fill="#F6C6CF"/>' +
+    '<circle cx="60" cy="52" r="33" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+    '<circle cx="47" cy="50" r="4" fill="#5B4A3F"/><circle cx="73" cy="50" r="4" fill="#5B4A3F"/>' +
+    '<circle cx="48.5" cy="48.5" r="1.3" fill="#FFFFFF"/><circle cx="74.5" cy="48.5" r="1.3" fill="#FFFFFF"/>' +
+    '<ellipse cx="38" cy="60" rx="6" ry="4" fill="#F6C6CF"/><ellipse cx="82" cy="60" rx="6" ry="4" fill="#F6C6CF"/>' +
+    '<path d="M54 62 Q57 66 60 62 Q63 66 66 62" fill="none" stroke="#5B4A3F" stroke-width="2" stroke-linecap="round"/>' +
+    '<ellipse cx="46" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+    '<ellipse cx="74" cy="106" rx="9" ry="6" fill="#FFFFFF" stroke="#E6D8BF" stroke-width="2.5"/>' +
+    '<path d="M52 84 Q54 78 60 80 Q66 78 68 84 Q66 90 60 88 Q54 90 52 84Z" fill="#E0798F"/>' +
+    '<circle cx="56" cy="83" r="2" fill="#F6C6CF" opacity=".7"/>' +
+    '<path d="M60 80 Q62 72 68 70" fill="none" stroke="#5E9C56" stroke-width="2" stroke-linecap="round"/>' +
+    '</svg>';
+  document.getElementById("homeCat").innerHTML = CAT_SVG;
+  document.getElementById("resultCat").innerHTML = CAT_SVG;
+
+  /* ---- さくらんぼ図（SVG）----
+     top: てっぺんの数, left/right: ぶらさがる2つ（"?" で空欄） */
+  function cherrySVG(top, left, right) {
+    function circ(cx, cy, r, val, isTop) {
+      var q = (val === "?");
+      var fill = isTop ? "var(--card)" : "var(--cherry-soft)";
+      var stroke = q ? "var(--muted)" : (isTop ? "var(--ink)" : "var(--cherry)");
+      var dash = q ? ' stroke-dasharray="6 5"' : "";
+      var txt = q ? "？" : String(val);
+      var tfill = q ? "var(--muted)" : "var(--ink)";
+      return '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="' + fill + '" stroke="' + stroke + '" stroke-width="3.5"' + dash + '/>' +
+        '<text x="' + cx + '" y="' + (cy + 1) + '" text-anchor="middle" dominant-baseline="central" ' +
+        'font-size="' + (isTop ? 34 : 32) + '" font-family="inherit" fill="' + tfill + '" font-weight="bold">' + txt + '</text>';
+    }
+    return '<svg viewBox="0 0 210 140" xmlns="http://www.w3.org/2000/svg">' +
+      '<path d="M105 62 Q76 72 57 88" fill="none" stroke="var(--leaf)" stroke-width="4" stroke-linecap="round"/>' +
+      '<path d="M105 62 Q134 72 153 88" fill="none" stroke="var(--leaf)" stroke-width="4" stroke-linecap="round"/>' +
+      '<path d="M105 60 Q116 48 130 52 Q120 62 105 60Z" fill="var(--leaf)" opacity=".85"/>' +
+      circ(105, 33, 30, top, true) +
+      circ(56, 105, 30, left, false) +
+      circ(154, 105, 30, right, false) +
+      '</svg>';
+  }
+
+  /* ---- 保存 ---- */
+  function loadData() {
+    try { var r = localStorage.getItem(KEY); if (r) return JSON.parse(r); } catch (e) {}
+    return { best: {}, sound: true };
+  }
+  function saveData() { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {} }
+  var data = loadData();
+  if (!data.unlocked) data.unlocked = {};
+  for (var mk in data.best) { if (data.best[mk]) data.unlocked[mk] = true; }
+
+  /* ---- おと（WebAudio・こわれても無視） ---- */
+  var actx = null;
+  function beep(kind) {
+    if (!data.sound) return;
+    try {
+      if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+      var t = actx.currentTime;
+      var o = actx.createOscillator(); var g = actx.createGain();
+      o.connect(g); g.connect(actx.destination);
+      g.gain.setValueAtTime(0.12, t);
+      if (kind === "ok") {
+        o.frequency.setValueAtTime(880, t); o.frequency.setValueAtTime(1320, t + 0.09);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.25); o.start(t); o.stop(t + 0.25);
+      } else if (kind === "ng") {
+        o.frequency.setValueAtTime(220, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.2); o.start(t); o.stop(t + 0.2);
+      } else {
+        o.frequency.setValueAtTime(1568, t); o.frequency.setValueAtTime(2093, t + 0.1);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.5); o.start(t); o.stop(t + 0.5);
+      }
+    } catch (e) {}
+  }
+
+  /* ---- もんだいづくり ----
+     q = { text, big, fig: {top,left,right} | null, figMini, ans } */
+  function rnd(n) { return Math.floor(Math.random() * n); }
+  function makeQ(mode) {
+    var m = mode;
+    if (mode === "maze") { m = ["ten", "wake", "sakura"][rnd(3)]; }
+    if (m === "ten") {
+      // 10の合成：a と □ で 10（□の位置は左右ランダム）
+      var a = 1 + rnd(9);
+      var missLeft = rnd(2) === 0;
+      return {
+        text: "10を つくるには？", big: false,
+        fig: { top: 10, left: missLeft ? "?" : a, right: missLeft ? a : "?" },
+        figMini: false, ans: 10 - a
+      };
+    }
+    if (m === "wake") {
+      // 分解：n は a と □（n=5〜10）
+      var n = 5 + rnd(6);
+      var a2 = 1 + rnd(n - 1);
+      var missLeft2 = rnd(2) === 0;
+      return {
+        text: n + "を わけると？", big: false,
+        fig: { top: n, left: missLeft2 ? "?" : a2, right: missLeft2 ? a2 : "?" },
+        figMini: false, ans: n - a2
+      };
+    }
+    // さくらんぼたしざん：くりあがり（a+b>10）。bを「10になるぶん」と「のこり」にわける図をヒント表示
+    var a3 = 5 + rnd(5);              // 5〜9
+    var bMin = 11 - a3;               // これ以上でくりあがり
+    var b3 = bMin + rnd(10 - bMin);   // bMin〜9
+    var b1 = 10 - a3; var b2 = b3 - b1;
+    return {
+      text: a3 + " ＋ " + b3 + " ＝", big: true,
+      fig: { top: b3, left: b1, right: b2 },
+      figMini: true, ans: a3 + b3
+    };
+  }
+  function makeSet(mode) {
+    var qs = []; var used = {};
+    while (qs.length < N_Q) {
+      var q = makeQ(mode);
+      var sig = q.text + "|" + (q.fig ? q.fig.top + "-" + q.fig.left + "-" + q.fig.right : "");
+      if (used[sig] && qs.length < 30) { if (Math.random() < 0.8) continue; }
+      used[sig] = true; qs.push(q);
+    }
+    return qs;
+  }
+
+  /* ---- 画面きりかえ ---- */
+  function show(id) {
+    var scrs = document.querySelectorAll(".screen");
+    for (var i = 0; i < scrs.length; i++) scrs[i].className = "screen";
+    document.getElementById(id).className = "screen show";
+  }
+
+  /* ---- ホーム ---- */
+  function fmtTime(ms) { return (ms / 1000).toFixed(1) + "びょう"; }
+  function renderHome() {
+    for (var k in MODES) {
+      var el = document.getElementById("best-" + k);
+      var btn = document.querySelector('.modebtn[data-mode="' + k + '"]');
+      if (!isOpen(k)) {
+        btn.classList.add("locked");
+        btn.setAttribute("aria-disabled", "true");
+        el.textContent = "🔒 " + LOCK_HINT[k] + "で パーフェクトを とると ひらくよ";
+      } else {
+        btn.classList.remove("locked");
+        btn.removeAttribute("aria-disabled");
+        var b = data.best[k];
+        el.textContent = b ? "ベスト：" + b.correct + "もん・" + fmtTime(b.timeMs) : "";
+      }
+    }
+    document.getElementById("soundBtn").textContent = data.sound ? "🔔 おと：オン" : "🔕 おと：オフ";
+  }
+  document.getElementById("soundBtn").addEventListener("click", function () {
+    data.sound = !data.sound; saveData(); renderHome();
+  });
+
+  /* ---- ゲームの状態 ---- */
+  var game = null;
+  document.querySelector(".modes").addEventListener("click", function (e) {
+    var b = e.target.closest(".modebtn"); if (!b) return;
+    var mode = b.getAttribute("data-mode");
+    if (!isOpen(mode)) {
+      document.getElementById("homeSay").textContent =
+        "「" + LOCK_HINT[mode] + "」で パーフェクト（ぜんぶ せいかい）を とると ひらくよ！";
+      b.classList.remove("deny");
+      void b.offsetWidth;
+      b.classList.add("deny");
+      setTimeout(function () { b.classList.remove("deny"); }, 350);
+      return;
+    }
+    startGame(mode);
+  });
+  function startGame(mode) {
+    game = { mode: mode, qs: makeSet(mode), idx: 0, correct: 0, input: "", start: Date.now(), busy: false };
+    show("scrGame");
+    renderQ(true);
+  }
+  document.getElementById("quitBtn").addEventListener("click", function () {
+    game = null; renderHome(); show("scrHome");
+  });
+
+  function renderQ(pop) {
+    var q = game.qs[game.idx];
+    document.getElementById("prog").textContent = (game.idx + 1) + " / " + N_Q;
+    var stars = ""; for (var i = 0; i < game.correct; i++) stars += "⭐";
+    document.getElementById("gameStars").textContent = stars;
+    var qt = document.getElementById("qtext");
+    qt.textContent = q.text;
+    qt.className = "qtext" + (q.big ? " big" : "");
+    var qf = document.getElementById("qfig");
+    if (q.fig) {
+      qf.innerHTML = cherrySVG(q.fig.top, q.fig.left, q.fig.right);
+      qf.className = "qfig" + (q.figMini ? " mini" : "");
+      qf.style.display = "";
+    } else {
+      qf.innerHTML = ""; qf.style.display = "none";
+    }
+    document.getElementById("ansline").innerHTML = game.input === "" ? '<span class="cursor">＿</span>' : game.input;
+    document.getElementById("feedback").textContent = "";
+    document.getElementById("feedback").className = "feedback";
+    var card = document.getElementById("qcard");
+    card.className = "qcard" + (pop ? " pop" : "");
+    if (pop) setTimeout(function () { card.className = "qcard"; }, 260);
+  }
+
+  document.querySelector(".pad").addEventListener("click", function (e) {
+    var b = e.target.closest(".key"); if (!b || !game || game.busy) return;
+    var k = b.getAttribute("data-k");
+    if (k === "del") { game.input = game.input.slice(0, -1); }
+    else if (k === "ok") { check(); return; }
+    else { if (game.input.length < 2) game.input += k; }
+    document.getElementById("ansline").innerHTML = game.input === "" ? '<span class="cursor">＿</span>' : game.input;
+  });
+
+  function check() {
+    if (game.input === "") return;
+    var q = game.qs[game.idx];
+    var card = document.getElementById("qcard");
+    var fb = document.getElementById("feedback");
+    game.busy = true;
+    if (parseInt(game.input, 10) === q.ans) {
+      game.correct++;
+      beep("ok");
+      card.className = "qcard right";
+      fb.textContent = "せいかい！";
+      fb.className = "feedback ok";
+      var s = document.createElement("span"); s.className = "flystar"; s.textContent = "🍒";
+      card.appendChild(s);
+      setTimeout(next, 550);
+    } else {
+      beep("ng");
+      card.className = "qcard wrong";
+      fb.textContent = "こたえは " + q.ans + " だよ";
+      fb.className = "feedback ng";
+      setTimeout(next, 1400);
+    }
+  }
+  function next() {
+    game.busy = false;
+    game.input = "";
+    game.idx++;
+    if (game.idx >= N_Q) { finish(); return; }
+    renderQ(true);
+  }
+
+  /* ---- けっか ---- */
+  function finish() {
+    var timeMs = Date.now() - game.start;
+    var stars = ""; for (var i = 0; i < game.correct; i++) stars += "⭐";
+    document.getElementById("rstars").textContent = stars || "…";
+    document.getElementById("rmsg").textContent = game.correct + "もん せいかい！";
+    document.getElementById("rtime").textContent = MODES[game.mode] + "・" + fmtTime(timeMs);
+
+    var prev = data.best[game.mode];
+    var isBest = !prev || game.correct > prev.correct ||
+      (game.correct === prev.correct && timeMs < prev.timeMs);
+    if (isBest) { data.best[game.mode] = { correct: game.correct, timeMs: timeMs }; saveData(); }
+    document.getElementById("bestBadge").className = "bestbadge" + (isBest ? " show" : "");
+
+    var unlockedName = "";
+    if (game.correct === N_Q) {
+      var nx = UNLOCK_NEXT[game.mode];
+      if (nx && !isOpen(nx)) { data.unlocked[nx] = true; saveData(); unlockedName = MODES[nx]; }
+    }
+    var ub = document.getElementById("unlockBadge");
+    ub.textContent = unlockedName ? "🔓 「" + unlockedName + "」が あそべるように なったよ！" : "";
+    ub.className = "unlockbadge" + (unlockedName ? " show" : "");
+
+    var say;
+    if (game.correct === N_Q) { say = "パーフェクト！！ てんさい！！"; beep("fanfare"); }
+    else if (game.correct >= 8) say = "すごい！ あと ちょっとで パーフェクト！";
+    else if (game.correct >= 5) say = "いいちょうし！ もういっかい やってみる？";
+    else say = "だいじょうぶ、ゆっくりで いいよ♪";
+    document.getElementById("rsay").textContent = say;
+
+    var last = game.mode;
+    document.getElementById("againBtn").onclick = function () { startGame(last); };
+    show("scrResult");
+  }
+  document.getElementById("homeBtn").addEventListener("click", function () {
+    renderHome(); show("scrHome");
+  });
+
+  renderHome();
+})();
+</script>

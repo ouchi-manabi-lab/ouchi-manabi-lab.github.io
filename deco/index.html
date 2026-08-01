@@ -31,13 +31,27 @@
   .title b{ font-size:21px; letter-spacing:.02em; }
   .title span{ font-size:11px; color:var(--chairo); }
   .head-btns{ margin-left:auto; display:flex; gap:7px; }
+  /* スマホ幅ではヘッダーを1行に詰める（タイトルが2行に折り返して95pxも占め、
+     そのぶん おえかきページが小さくなっていた。2026-07-31修正） */
+  @media (max-width:430px){
+    header{ padding:5px 8px; gap:6px; }
+    .neko{ width:32px; height:32px; }
+    /* スマホ幅ではタイトル文字を出さない（白猫＋3つのボタンを優先。
+       「もどす・ぜんぶ・ほぞん」の言葉のほうが子どもには必要で、タイトルを残すとボタンが画面右にはみ出す） */
+    .title{ display:none; }
+    /* white-space:nowrap が肝：これが無いとボタンの文字が折り返して4行になり、ヘッダーが77px分ふくらんでいた */
+    .hbtn{ padding:8px 7px; font-size:11.5px; border-radius:14px; white-space:nowrap; }
+    .head-btns{ gap:5px; }
+  }
   button{ font-family:var(--font); cursor:pointer; }
   .hbtn{ border:none; border-radius:16px; padding:9px 12px; font-size:14px; font-weight:700; color:#fff; min-height:44px; box-shadow:0 3px 0 rgba(0,0,0,.12); transition:transform .05s; }
   .hbtn:active{ transform:translateY(2px); box-shadow:0 1px 0 rgba(0,0,0,.12); }
   .hbtn.hozon{ background:var(--mori); } .hbtn.modosu{ background:var(--sora); color:var(--moji); } .hbtn.keshi{ background:var(--momo); color:var(--moji); }
 
-  .stage{ flex:1 1 auto; position:relative; display:flex; align-items:center; justify-content:center; padding:8px; min-height:0; }
-  .page{ position:relative; width:min(94vw, 52dvh); aspect-ratio:3/4; background:var(--kami); border-radius:26px; box-shadow:0 10px 24px rgba(120,90,50,.18), inset 0 0 0 6px #fff; outline:5px solid #f0e2c8; overflow:hidden; touch-action:none; }
+  .stage{ flex:1 1 auto; position:relative; display:flex; align-items:center; justify-content:center; padding:8px; min-height:0; overflow:hidden; }
+  /* ページは「ステージの中に必ず収まる」大きさにする（高さ基準→縦横比で横幅が決まる。横がはみ出すときはmax-widthで頭打ち）。
+     旧 width:min(94vw,52dvh) は画面が縦に短いと高さがステージを超え、下のタブを覆ってしまった（2026-07-31修正） */
+  .page{ position:relative; height:100%; width:auto; max-width:100%; max-height:100%; aspect-ratio:3/4; background:var(--kami); border-radius:26px; box-shadow:0 10px 24px rgba(120,90,50,.18), inset 0 0 0 6px #fff; outline:5px solid #f0e2c8; overflow:hidden; touch-action:none; }
   .scene{ position:absolute; inset:0; width:100%; height:100%; pointer-events:none; display:none; }
   .page::before{ content:""; position:absolute; left:12px; top:12%; bottom:12%; width:4px; z-index:2; background:repeating-linear-gradient(#e7d6b4 0 6px, transparent 6px 22px); border-radius:4px; opacity:.55; }
   .sticker{ position:absolute; left:50%; top:50%; font-size:46px; line-height:1; transform:translate(-50%,-50%); transform-origin:center; cursor:grab; user-select:none; touch-action:none; will-change:transform,left,top;
@@ -53,8 +67,10 @@
   .sbtn small{ font-size:11px; } .sbtn:active{ transform:translateY(2px); box-shadow:0 1px 0 #e7d6b4; } .sbtn.del{ background:var(--momo); }
 
   .palette{ background:var(--kami); border-top:4px dotted #f0e2c8; padding:6px 10px 10px; }
-  .tabs{ display:flex; gap:6px; overflow-x:auto; padding-bottom:5px; }
-  .tab{ border:none; border-radius:14px 14px 6px 6px; padding:8px 12px; min-height:44px; font-size:15px; font-weight:700; background:#f1e7d4; color:var(--chairo); white-space:nowrap; display:flex; align-items:center; }
+  /* タブは折り返して6つ全部を出す（横スクロールだと右の「おはな・キラキラ」に気づけず、
+     子どもが他のシールを選べなかった。2026-07-31修正） */
+  .tabs{ display:flex; gap:5px; flex-wrap:wrap; padding-bottom:5px; }
+  .tab{ border:none; border-radius:14px 14px 6px 6px; padding:6px 10px; min-height:44px; font-size:14px; font-weight:700; background:#f1e7d4; color:var(--chairo); white-space:nowrap; display:flex; align-items:center; }
   .tab.on{ background:var(--tanpopo); color:var(--moji); box-shadow:inset 0 -3px 0 var(--orange); }
   .stickers{ display:flex; gap:4px; overflow-x:auto; padding:5px 2px; min-height:60px; align-items:center; }
   .pbtn{ flex:0 0 auto; border:none; background:transparent; font-size:34px; line-height:1; width:54px; height:54px; border-radius:14px; display:flex; align-items:center; justify-content:center; }

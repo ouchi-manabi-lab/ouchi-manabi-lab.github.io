@@ -1,0 +1,16 @@
+{
+  "name": "おうちアプリずかん",
+  "short_name": "ずかん",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#3E8757",
+  "theme_color": "#3E8757",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

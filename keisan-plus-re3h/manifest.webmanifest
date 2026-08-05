@@ -1,0 +1,16 @@
+{
+  "name": "フラッシュけいさん できあい版",
+  "short_name": "けいさん",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#F5E6C8",
+  "theme_color": "#F5E6C8",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

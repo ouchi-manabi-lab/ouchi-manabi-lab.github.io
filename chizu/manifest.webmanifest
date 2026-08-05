@@ -1,0 +1,16 @@
+{
+  "name": "にほんちず",
+  "short_name": "ちず",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#6FA8CE",
+  "theme_color": "#6FA8CE",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

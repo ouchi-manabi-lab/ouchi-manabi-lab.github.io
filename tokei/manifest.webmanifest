@@ -1,0 +1,16 @@
+{
+  "name": "とけいよみ",
+  "short_name": "とけい",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#5E9C56",
+  "theme_color": "#5E9C56",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

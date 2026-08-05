@@ -1,0 +1,16 @@
+{
+  "name": "スマホでおうち学習ラボ",
+  "short_name": "おうちラボ",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#7C9070",
+  "theme_color": "#7C9070",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
